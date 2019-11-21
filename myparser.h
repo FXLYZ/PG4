@@ -19,7 +19,7 @@
 * C++ header file generated from myparser.y.
 * 
 * Date: 11/21/19
-* Time: 00:20:00
+* Time: 16:55:13
 * 
 * AYACC Version: 2.07
 ****************************************************************************/
@@ -61,7 +61,7 @@ protected:
 	virtual void yycopyattribute(void YYFAR* dest, const void YYFAR* src, int count);
 
 public:
-#line 374 ".\\myparser.y"
+#line 321 ".\\myparser.y"
 
 	// place any extra class members here
 	// virtual int yygettoken();
@@ -73,7 +73,7 @@ public:
 #define YYPARSERNAME myparser
 #endif
 
-#line 390 ".\\myparser.y"
+#line 336 ".\\myparser.y"
 
 #ifndef YYSTYPE
 #define YYSTYPE TreeNode*
@@ -90,9 +90,9 @@ public:
 #define INC 264
 #define DEC 265
 #define B_AND 266
-#define B_IOR 267
-#define B_EOR 268
-#define B_OPP 269
+#define B_OR 267
+#define B_XOR 268
+#define B_NOT 269
 #define M_LEFT 270
 #define M_RIGHT 271
 #define MAIN 272
@@ -102,25 +102,24 @@ public:
 #define ELSE 276
 #define WHILE 277
 #define FOR 278
-#define STR 279
-#define LETTER 280
-#define EQ 281
-#define GRT 282
-#define LET 283
-#define GRE 284
-#define LEE 285
-#define NE 286
-#define AND 287
-#define OR 288
-#define NOT 289
-#define LBRACE 290
-#define RBRACE 291
-#define LPAREN 292
-#define RPAREN 293
-#define LBRACKET 294
-#define RBRACKET 295
-#define SEMICOLON 296
-#define COMMA 297
-#define ASSIGN 298
-#define USUB 299
+#define IN 279
+#define OUT 280
+#define LETTER 281
+#define EQ 282
+#define GRT 283
+#define LET 284
+#define GRE 285
+#define LEE 286
+#define NE 287
+#define AND 288
+#define OR 289
+#define NOT 290
+#define LBRACE 291
+#define RBRACE 292
+#define LPAREN 293
+#define RPAREN 294
+#define SEMICOLON 295
+#define COMMA 296
+#define ASSIGN 297
+#define USUB 298
 #endif

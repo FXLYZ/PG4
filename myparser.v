@@ -19,7 +19,7 @@
 # YACC verbose file generated from myparser.y.
 # 
 # Date: 11/21/19
-# Time: 00:20:00
+# Time: 16:55:13
 # 
 # AYACC Version: 2.07
 #############################################################################
@@ -33,84 +33,90 @@
 
     1  main : MAIN LPAREN RPAREN braced_stmt
 
-    2  braced_stmt : LBRACE stmts RBRACE
+    2  braced_stmt : LBRACE comp_stmt RBRACE
     3              | LBRACE RBRACE
 
-    4  stmts : stmt stmts
-    5        | stmt
+    4  comp_stmt : stmt comp_stmt
+    5            | stmt
 
     6  stmt : decl_stmt SEMICOLON
     7       | braced_stmt
     8       | while_stmt
-    9       | if_stmt
-   10       | for_stmt
-   11       | expr SEMICOLON
-   12       | SEMICOLON
+    9       | in_stmt
+   10       | out_stmt
+   11       | if_stmt
+   12       | for_stmt
+   13       | expr SEMICOLON
+   14       | SEMICOLON
 
-   13  decl_stmt : type idlist
+   15  decl_stmt : type idlist
 
-   14  type : INT
-   15       | CHAR
+   16  type : INT
+   17       | CHAR
 
-   16  idlist : id COMMA idlist
-   17         | assign_stmt COMMA idlist
-   18         | id
-   19         | assign_stmt
+   18  idlist : id COMMA idlist
+   19         | assign_stmt COMMA idlist
+   20         | id
+   21         | assign_stmt
 
-   20  id : ID
+   22  id : ID
 
-   21  assign_stmt : id ASSIGN expr
+   23  assign_stmt : id ASSIGN expr
 
-   22  expr : expr ADD expr
-   23       | expr SUB expr
-   24       | expr MUL expr
-   25       | expr DIV expr
-   26       | expr MOD expr
-   27       | SUB expr
-   28       | expr INC
-   29       | expr DEC
-   30       | INC expr
-   31       | DEC expr
-   32       | expr M_LEFT expr
-   33       | expr M_RIGHT expr
-   34       | expr EQ expr
-   35       | expr GRT expr
-   36       | expr LET expr
-   37       | expr GRE expr
-   38       | expr LEE expr
-   39       | expr NE expr
-   40       | expr AND expr
-   41       | expr OR expr
-   42       | NOT expr
-   43       | B_AND expr
-   44       | B_EOR expr
-   45       | B_IOR expr
-   46       | B_OPP expr
-   47       | factor
-   48       | assign_stmt
+   24  expr : expr ADD expr
+   25       | expr SUB expr
+   26       | expr MUL expr
+   27       | expr DIV expr
+   28       | expr MOD expr
+   29       | SUB expr
+   30       | expr INC
+   31       | expr DEC
+   32       | INC expr
+   33       | DEC expr
+   34       | expr M_LEFT expr
+   35       | expr M_RIGHT expr
+   36       | expr EQ expr
+   37       | expr GRT expr
+   38       | expr LET expr
+   39       | expr GRE expr
+   40       | expr LEE expr
+   41       | expr NE expr
+   42       | expr AND expr
+   43       | expr OR expr
+   44       | NOT expr
+   45       | B_AND expr
+   46       | B_XOR expr
+   47       | B_OR expr
+   48       | B_NOT expr
+   49       | factor
+   50       | assign_stmt
 
-   49  factor : id
-   50         | num
-   51         | letter
-   52         | LPAREN expr RPAREN
+   51  factor : id
+   52         | num
+   53         | letter
+   54         | LPAREN expr RPAREN
 
-   53  num : NUMBER
+   55  num : NUMBER
 
-   54  letter : LETTER
+   56  letter : LETTER
 
-   55  while_stmt : WHILE LPAREN expr RPAREN stmt
+   57  while_stmt : WHILE LPAREN expr RPAREN stmt
 
-   56  if_stmt : IF LPAREN expr RPAREN stmt
-   57          | IF LPAREN expr RPAREN stmt ELSE stmt
+   58  in_stmt : IN LPAREN expr RPAREN SEMICOLON
 
-   58  for_stmt : FOR LPAREN expr SEMICOLON expr SEMICOLON expr RPAREN stmt
-   59           | FOR LPAREN expr SEMICOLON expr SEMICOLON RPAREN stmt
-   60           | FOR LPAREN expr SEMICOLON SEMICOLON expr RPAREN stmt
-   61           | FOR LPAREN expr SEMICOLON SEMICOLON RPAREN stmt
-   62           | FOR LPAREN SEMICOLON expr SEMICOLON expr RPAREN stmt
-   63           | FOR LPAREN SEMICOLON expr SEMICOLON RPAREN stmt
-   64           | FOR LPAREN SEMICOLON SEMICOLON expr RPAREN stmt
-   65           | FOR LPAREN SEMICOLON SEMICOLON RPAREN stmt
+   59  out_stmt : OUT LPAREN expr RPAREN SEMICOLON
+
+   60  if_stmt : IF LPAREN expr RPAREN stmt
+   61          | IF LPAREN expr RPAREN stmt ELSE stmt
+
+   62  for_stmt : FOR LPAREN expr SEMICOLON expr SEMICOLON expr RPAREN stmt
+   63           | FOR LPAREN expr SEMICOLON expr SEMICOLON RPAREN stmt
+   64           | FOR LPAREN expr SEMICOLON SEMICOLON expr RPAREN stmt
+   65           | FOR LPAREN expr SEMICOLON SEMICOLON RPAREN stmt
+   66           | FOR LPAREN SEMICOLON expr SEMICOLON expr RPAREN stmt
+   67           | FOR LPAREN SEMICOLON expr SEMICOLON RPAREN stmt
+   68           | FOR LPAREN SEMICOLON SEMICOLON expr RPAREN stmt
+   69           | FOR LPAREN SEMICOLON SEMICOLON RPAREN stmt
 
 
 ##############################################################################
@@ -152,7 +158,7 @@ state 4
 
 
 state 5
-	braced_stmt : LBRACE . stmts RBRACE
+	braced_stmt : LBRACE . comp_stmt RBRACE
 	braced_stmt : LBRACE . RBRACE
 
 	NUMBER  shift 7
@@ -161,35 +167,39 @@ state 5
 	INC  shift 10
 	DEC  shift 11
 	B_AND  shift 12
-	B_IOR  shift 13
-	B_EOR  shift 14
-	B_OPP  shift 15
+	B_OR  shift 13
+	B_XOR  shift 14
+	B_NOT  shift 15
 	INT  shift 16
 	CHAR  shift 17
 	IF  shift 18
 	WHILE  shift 19
 	FOR  shift 20
-	LETTER  shift 21
-	NOT  shift 22
+	IN  shift 21
+	OUT  shift 22
+	LETTER  shift 23
+	NOT  shift 24
 	LBRACE  shift 5
-	RBRACE  shift 23
-	LPAREN  shift 24
-	SEMICOLON  shift 25
+	RBRACE  shift 25
+	LPAREN  shift 26
+	SEMICOLON  shift 27
 
-	type  goto 26
-	while_stmt  goto 27
-	braced_stmt  goto 28
-	stmt  goto 29
-	if_stmt  goto 30
-	for_stmt  goto 31
-	stmts  goto 32
-	decl_stmt  goto 33
-	expr  goto 34
-	id  goto 35
-	assign_stmt  goto 36
-	factor  goto 37
-	num  goto 38
+	decl_stmt  goto 28
+	expr  goto 29
+	type  goto 30
+	braced_stmt  goto 31
+	in_stmt  goto 32
+	comp_stmt  goto 33
+	while_stmt  goto 34
+	out_stmt  goto 35
+	stmt  goto 36
+	for_stmt  goto 37
+	if_stmt  goto 38
 	letter  goto 39
+	id  goto 40
+	assign_stmt  goto 41
+	factor  goto 42
+	num  goto 43
 
 
 state 6
@@ -199,15 +209,15 @@ state 6
 
 
 state 7
-	num : NUMBER .  (53)
+	num : NUMBER .  (55)
 
-	.  reduce 53
+	.  reduce 55
 
 
 state 8
-	id : ID .  (20)
+	id : ID .  (22)
 
-	.  reduce 20
+	.  reduce 22
 
 
 state 9
@@ -219,19 +229,19 @@ state 9
 	INC  shift 10
 	DEC  shift 11
 	B_AND  shift 12
-	B_IOR  shift 13
-	B_EOR  shift 14
-	B_OPP  shift 15
-	LETTER  shift 21
-	NOT  shift 22
-	LPAREN  shift 24
+	B_OR  shift 13
+	B_XOR  shift 14
+	B_NOT  shift 15
+	LETTER  shift 23
+	NOT  shift 24
+	LPAREN  shift 26
 
-	expr  goto 40
-	id  goto 35
-	assign_stmt  goto 36
-	factor  goto 37
-	num  goto 38
+	expr  goto 44
 	letter  goto 39
+	id  goto 40
+	assign_stmt  goto 41
+	factor  goto 42
+	num  goto 43
 
 
 state 10
@@ -243,19 +253,19 @@ state 10
 	INC  shift 10
 	DEC  shift 11
 	B_AND  shift 12
-	B_IOR  shift 13
-	B_EOR  shift 14
-	B_OPP  shift 15
-	LETTER  shift 21
-	NOT  shift 22
-	LPAREN  shift 24
+	B_OR  shift 13
+	B_XOR  shift 14
+	B_NOT  shift 15
+	LETTER  shift 23
+	NOT  shift 24
+	LPAREN  shift 26
 
-	expr  goto 41
-	id  goto 35
-	assign_stmt  goto 36
-	factor  goto 37
-	num  goto 38
+	expr  goto 45
 	letter  goto 39
+	id  goto 40
+	assign_stmt  goto 41
+	factor  goto 42
+	num  goto 43
 
 
 state 11
@@ -267,19 +277,19 @@ state 11
 	INC  shift 10
 	DEC  shift 11
 	B_AND  shift 12
-	B_IOR  shift 13
-	B_EOR  shift 14
-	B_OPP  shift 15
-	LETTER  shift 21
-	NOT  shift 22
-	LPAREN  shift 24
+	B_OR  shift 13
+	B_XOR  shift 14
+	B_NOT  shift 15
+	LETTER  shift 23
+	NOT  shift 24
+	LPAREN  shift 26
 
-	expr  goto 42
-	id  goto 35
-	assign_stmt  goto 36
-	factor  goto 37
-	num  goto 38
+	expr  goto 46
 	letter  goto 39
+	id  goto 40
+	assign_stmt  goto 41
+	factor  goto 42
+	num  goto 43
 
 
 state 12
@@ -291,23 +301,23 @@ state 12
 	INC  shift 10
 	DEC  shift 11
 	B_AND  shift 12
-	B_IOR  shift 13
-	B_EOR  shift 14
-	B_OPP  shift 15
-	LETTER  shift 21
-	NOT  shift 22
-	LPAREN  shift 24
+	B_OR  shift 13
+	B_XOR  shift 14
+	B_NOT  shift 15
+	LETTER  shift 23
+	NOT  shift 24
+	LPAREN  shift 26
 
-	expr  goto 43
-	id  goto 35
-	assign_stmt  goto 36
-	factor  goto 37
-	num  goto 38
+	expr  goto 47
 	letter  goto 39
+	id  goto 40
+	assign_stmt  goto 41
+	factor  goto 42
+	num  goto 43
 
 
 state 13
-	expr : B_IOR . expr
+	expr : B_OR . expr
 
 	NUMBER  shift 7
 	ID  shift 8
@@ -315,23 +325,23 @@ state 13
 	INC  shift 10
 	DEC  shift 11
 	B_AND  shift 12
-	B_IOR  shift 13
-	B_EOR  shift 14
-	B_OPP  shift 15
-	LETTER  shift 21
-	NOT  shift 22
-	LPAREN  shift 24
+	B_OR  shift 13
+	B_XOR  shift 14
+	B_NOT  shift 15
+	LETTER  shift 23
+	NOT  shift 24
+	LPAREN  shift 26
 
-	expr  goto 44
-	id  goto 35
-	assign_stmt  goto 36
-	factor  goto 37
-	num  goto 38
+	expr  goto 48
 	letter  goto 39
+	id  goto 40
+	assign_stmt  goto 41
+	factor  goto 42
+	num  goto 43
 
 
 state 14
-	expr : B_EOR . expr
+	expr : B_XOR . expr
 
 	NUMBER  shift 7
 	ID  shift 8
@@ -339,23 +349,23 @@ state 14
 	INC  shift 10
 	DEC  shift 11
 	B_AND  shift 12
-	B_IOR  shift 13
-	B_EOR  shift 14
-	B_OPP  shift 15
-	LETTER  shift 21
-	NOT  shift 22
-	LPAREN  shift 24
+	B_OR  shift 13
+	B_XOR  shift 14
+	B_NOT  shift 15
+	LETTER  shift 23
+	NOT  shift 24
+	LPAREN  shift 26
 
-	expr  goto 45
-	id  goto 35
-	assign_stmt  goto 36
-	factor  goto 37
-	num  goto 38
+	expr  goto 49
 	letter  goto 39
+	id  goto 40
+	assign_stmt  goto 41
+	factor  goto 42
+	num  goto 43
 
 
 state 15
-	expr : B_OPP . expr
+	expr : B_NOT . expr
 
 	NUMBER  shift 7
 	ID  shift 8
@@ -363,66 +373,78 @@ state 15
 	INC  shift 10
 	DEC  shift 11
 	B_AND  shift 12
-	B_IOR  shift 13
-	B_EOR  shift 14
-	B_OPP  shift 15
-	LETTER  shift 21
-	NOT  shift 22
-	LPAREN  shift 24
+	B_OR  shift 13
+	B_XOR  shift 14
+	B_NOT  shift 15
+	LETTER  shift 23
+	NOT  shift 24
+	LPAREN  shift 26
 
-	expr  goto 46
-	id  goto 35
-	assign_stmt  goto 36
-	factor  goto 37
-	num  goto 38
+	expr  goto 50
 	letter  goto 39
+	id  goto 40
+	assign_stmt  goto 41
+	factor  goto 42
+	num  goto 43
 
 
 state 16
-	type : INT .  (14)
+	type : INT .  (16)
 
-	.  reduce 14
+	.  reduce 16
 
 
 state 17
-	type : CHAR .  (15)
+	type : CHAR .  (17)
 
-	.  reduce 15
+	.  reduce 17
 
 
 state 18
 	if_stmt : IF . LPAREN expr RPAREN stmt
 	if_stmt : IF . LPAREN expr RPAREN stmt ELSE stmt
 
-	LPAREN  shift 47
+	LPAREN  shift 51
 
 
 state 19
 	while_stmt : WHILE . LPAREN expr RPAREN stmt
 
-	LPAREN  shift 48
+	LPAREN  shift 52
 
 
 state 20
-	for_stmt : FOR . LPAREN expr SEMICOLON expr SEMICOLON RPAREN stmt
 	for_stmt : FOR . LPAREN expr SEMICOLON expr SEMICOLON expr RPAREN stmt
 	for_stmt : FOR . LPAREN expr SEMICOLON SEMICOLON expr RPAREN stmt
 	for_stmt : FOR . LPAREN expr SEMICOLON SEMICOLON RPAREN stmt
-	for_stmt : FOR . LPAREN SEMICOLON SEMICOLON expr RPAREN stmt
-	for_stmt : FOR . LPAREN SEMICOLON expr SEMICOLON RPAREN stmt
+	for_stmt : FOR . LPAREN expr SEMICOLON expr SEMICOLON RPAREN stmt
 	for_stmt : FOR . LPAREN SEMICOLON expr SEMICOLON expr RPAREN stmt
+	for_stmt : FOR . LPAREN SEMICOLON expr SEMICOLON RPAREN stmt
+	for_stmt : FOR . LPAREN SEMICOLON SEMICOLON expr RPAREN stmt
 	for_stmt : FOR . LPAREN SEMICOLON SEMICOLON RPAREN stmt
 
-	LPAREN  shift 49
+	LPAREN  shift 53
 
 
 state 21
-	letter : LETTER .  (54)
+	in_stmt : IN . LPAREN expr RPAREN SEMICOLON
 
-	.  reduce 54
+	LPAREN  shift 54
 
 
 state 22
+	out_stmt : OUT . LPAREN expr RPAREN SEMICOLON
+
+	LPAREN  shift 55
+
+
+state 23
+	letter : LETTER .  (56)
+
+	.  reduce 56
+
+
+state 24
 	expr : NOT . expr
 
 	NUMBER  shift 7
@@ -431,28 +453,28 @@ state 22
 	INC  shift 10
 	DEC  shift 11
 	B_AND  shift 12
-	B_IOR  shift 13
-	B_EOR  shift 14
-	B_OPP  shift 15
-	LETTER  shift 21
-	NOT  shift 22
-	LPAREN  shift 24
+	B_OR  shift 13
+	B_XOR  shift 14
+	B_NOT  shift 15
+	LETTER  shift 23
+	NOT  shift 24
+	LPAREN  shift 26
 
-	expr  goto 50
-	id  goto 35
-	assign_stmt  goto 36
-	factor  goto 37
-	num  goto 38
+	expr  goto 56
 	letter  goto 39
+	id  goto 40
+	assign_stmt  goto 41
+	factor  goto 42
+	num  goto 43
 
 
-state 23
+state 25
 	braced_stmt : LBRACE RBRACE .  (3)
 
 	.  reduce 3
 
 
-state 24
+state 26
 	factor : LPAREN . expr RPAREN
 
 	NUMBER  shift 7
@@ -461,52 +483,116 @@ state 24
 	INC  shift 10
 	DEC  shift 11
 	B_AND  shift 12
-	B_IOR  shift 13
-	B_EOR  shift 14
-	B_OPP  shift 15
-	LETTER  shift 21
-	NOT  shift 22
-	LPAREN  shift 24
+	B_OR  shift 13
+	B_XOR  shift 14
+	B_NOT  shift 15
+	LETTER  shift 23
+	NOT  shift 24
+	LPAREN  shift 26
 
-	expr  goto 51
-	id  goto 35
-	assign_stmt  goto 36
-	factor  goto 37
-	num  goto 38
+	expr  goto 57
 	letter  goto 39
+	id  goto 40
+	assign_stmt  goto 41
+	factor  goto 42
+	num  goto 43
 
 
-state 25
-	stmt : SEMICOLON .  (12)
+state 27
+	stmt : SEMICOLON .  (14)
 
-	.  reduce 12
+	.  reduce 14
 
 
-state 26
+state 28
+	stmt : decl_stmt . SEMICOLON
+
+	SEMICOLON  shift 58
+
+
+state 29
+	stmt : expr . SEMICOLON
+	expr : expr . INC
+	expr : expr . DEC
+	expr : expr . MUL expr
+	expr : expr . DIV expr
+	expr : expr . MOD expr
+	expr : expr . ADD expr
+	expr : expr . SUB expr
+	expr : expr . OR expr
+	expr : expr . GRT expr
+	expr : expr . LEE expr
+	expr : expr . AND expr
+	expr : expr . LET expr
+	expr : expr . GRE expr
+	expr : expr . EQ expr
+	expr : expr . NE expr
+	expr : expr . M_LEFT expr
+	expr : expr . M_RIGHT expr
+
+	ADD  shift 59
+	SUB  shift 60
+	MUL  shift 61
+	DIV  shift 62
+	MOD  shift 63
+	INC  shift 64
+	DEC  shift 65
+	M_LEFT  shift 66
+	M_RIGHT  shift 67
+	EQ  shift 68
+	GRT  shift 69
+	LET  shift 70
+	GRE  shift 71
+	LEE  shift 72
+	NE  shift 73
+	AND  shift 74
+	OR  shift 75
+	SEMICOLON  shift 76
+
+
+state 30
 	decl_stmt : type . idlist
 
 	ID  shift 8
 
-	idlist  goto 52
-	id  goto 53
-	assign_stmt  goto 54
+	idlist  goto 77
+	id  goto 78
+	assign_stmt  goto 79
 
 
-state 27
-	stmt : while_stmt .  (8)
-
-	.  reduce 8
-
-
-state 28
+state 31
 	stmt : braced_stmt .  (7)
 
 	.  reduce 7
 
 
-state 29
-	stmts : stmt . stmts
-	stmts : stmt .  (5)
+state 32
+	stmt : in_stmt .  (9)
+
+	.  reduce 9
+
+
+state 33
+	braced_stmt : LBRACE comp_stmt . RBRACE
+
+	RBRACE  shift 80
+
+
+state 34
+	stmt : while_stmt .  (8)
+
+	.  reduce 8
+
+
+state 35
+	stmt : out_stmt .  (10)
+
+	.  reduce 10
+
+
+state 36
+	comp_stmt : stmt . comp_stmt
+	comp_stmt : stmt .  (5)
 
 	NUMBER  shift 7
 	ID  shift 8
@@ -514,346 +600,298 @@ state 29
 	INC  shift 10
 	DEC  shift 11
 	B_AND  shift 12
-	B_IOR  shift 13
-	B_EOR  shift 14
-	B_OPP  shift 15
+	B_OR  shift 13
+	B_XOR  shift 14
+	B_NOT  shift 15
 	INT  shift 16
 	CHAR  shift 17
 	IF  shift 18
 	WHILE  shift 19
 	FOR  shift 20
-	LETTER  shift 21
-	NOT  shift 22
+	IN  shift 21
+	OUT  shift 22
+	LETTER  shift 23
+	NOT  shift 24
 	LBRACE  shift 5
-	LPAREN  shift 24
-	SEMICOLON  shift 25
+	LPAREN  shift 26
+	SEMICOLON  shift 27
 	.  reduce 5
 
-	type  goto 26
-	while_stmt  goto 27
-	braced_stmt  goto 28
-	stmt  goto 29
-	if_stmt  goto 30
-	for_stmt  goto 31
-	stmts  goto 55
-	decl_stmt  goto 33
-	expr  goto 34
-	id  goto 35
-	assign_stmt  goto 36
-	factor  goto 37
-	num  goto 38
+	decl_stmt  goto 28
+	expr  goto 29
+	type  goto 30
+	braced_stmt  goto 31
+	in_stmt  goto 32
+	comp_stmt  goto 81
+	while_stmt  goto 34
+	out_stmt  goto 35
+	stmt  goto 36
+	for_stmt  goto 37
+	if_stmt  goto 38
 	letter  goto 39
-
-
-state 30
-	stmt : if_stmt .  (9)
-
-	.  reduce 9
-
-
-state 31
-	stmt : for_stmt .  (10)
-
-	.  reduce 10
-
-
-state 32
-	braced_stmt : LBRACE stmts . RBRACE
-
-	RBRACE  shift 56
-
-
-state 33
-	stmt : decl_stmt . SEMICOLON
-
-	SEMICOLON  shift 57
-
-
-state 34
-	stmt : expr . SEMICOLON
-	expr : expr . SUB expr
-	expr : expr . MOD expr
-	expr : expr . INC
-	expr : expr . DEC
-	expr : expr . ADD expr
-	expr : expr . MUL expr
-	expr : expr . DIV expr
-	expr : expr . OR expr
-	expr : expr . AND expr
-	expr : expr . M_LEFT expr
-	expr : expr . LEE expr
-	expr : expr . LET expr
-	expr : expr . NE expr
-	expr : expr . EQ expr
-	expr : expr . M_RIGHT expr
-	expr : expr . GRE expr
-	expr : expr . GRT expr
-
-	ADD  shift 58
-	SUB  shift 59
-	MUL  shift 60
-	DIV  shift 61
-	MOD  shift 62
-	INC  shift 63
-	DEC  shift 64
-	M_LEFT  shift 65
-	M_RIGHT  shift 66
-	EQ  shift 67
-	GRT  shift 68
-	LET  shift 69
-	GRE  shift 70
-	LEE  shift 71
-	NE  shift 72
-	AND  shift 73
-	OR  shift 74
-	SEMICOLON  shift 75
-
-
-state 35
-	assign_stmt : id . ASSIGN expr
-	factor : id .  (49)
-
-	ASSIGN  shift 76
-	.  reduce 49
-
-
-state 36
-	expr : assign_stmt .  (48)
-
-	.  reduce 48
+	id  goto 40
+	assign_stmt  goto 41
+	factor  goto 42
+	num  goto 43
 
 
 state 37
-	expr : factor .  (47)
+	stmt : for_stmt .  (12)
 
-	.  reduce 47
+	.  reduce 12
 
 
 state 38
-	factor : num .  (50)
+	stmt : if_stmt .  (11)
+
+	.  reduce 11
+
+
+state 39
+	factor : letter .  (53)
+
+	.  reduce 53
+
+
+state 40
+	assign_stmt : id . ASSIGN expr
+	factor : id .  (51)
+
+	ASSIGN  shift 82
+	.  reduce 51
+
+
+state 41
+	expr : assign_stmt .  (50)
 
 	.  reduce 50
 
 
-state 39
-	factor : letter .  (51)
-
-	.  reduce 51
-
-
-state 40
-	expr : expr . SUB expr
-	expr : expr . MOD expr
-	expr : expr . INC
-	expr : expr . DEC
-	expr : expr . ADD expr
-	expr : expr . MUL expr
-	expr : expr . DIV expr
-	expr : SUB expr .  (27)
-	expr : expr . OR expr
-	expr : expr . AND expr
-	expr : expr . M_LEFT expr
-	expr : expr . LEE expr
-	expr : expr . LET expr
-	expr : expr . NE expr
-	expr : expr . EQ expr
-	expr : expr . M_RIGHT expr
-	expr : expr . GRE expr
-	expr : expr . GRT expr
-
-	INC  shift 63
-	DEC  shift 64
-	.  reduce 27
-
-
-state 41
-	expr : expr . SUB expr
-	expr : expr . MOD expr
-	expr : expr . INC
-	expr : expr . DEC
-	expr : expr . ADD expr
-	expr : expr . MUL expr
-	expr : expr . DIV expr
-	expr : expr . OR expr
-	expr : expr . AND expr
-	expr : expr . M_LEFT expr
-	expr : expr . LEE expr
-	expr : expr . LET expr
-	expr : expr . NE expr
-	expr : expr . EQ expr
-	expr : expr . M_RIGHT expr
-	expr : expr . GRE expr
-	expr : INC expr .  (30)
-	expr : expr . GRT expr
-
-	INC  shift 63
-	DEC  shift 64
-	.  reduce 30
-
-
 state 42
-	expr : expr . SUB expr
-	expr : expr . MOD expr
-	expr : expr . INC
-	expr : expr . DEC
-	expr : expr . ADD expr
-	expr : expr . MUL expr
-	expr : expr . DIV expr
-	expr : expr . OR expr
-	expr : expr . AND expr
-	expr : expr . M_LEFT expr
-	expr : DEC expr .  (31)
-	expr : expr . LEE expr
-	expr : expr . LET expr
-	expr : expr . NE expr
-	expr : expr . EQ expr
-	expr : expr . M_RIGHT expr
-	expr : expr . GRE expr
-	expr : expr . GRT expr
+	expr : factor .  (49)
 
-	INC  shift 63
-	DEC  shift 64
-	.  reduce 31
+	.  reduce 49
 
 
 state 43
-	expr : expr . SUB expr
-	expr : expr . MOD expr
-	expr : expr . INC
-	expr : expr . DEC
-	expr : expr . ADD expr
-	expr : expr . MUL expr
-	expr : expr . DIV expr
-	expr : expr . OR expr
-	expr : B_AND expr .  (43)
-	expr : expr . AND expr
-	expr : expr . M_LEFT expr
-	expr : expr . LEE expr
-	expr : expr . LET expr
-	expr : expr . NE expr
-	expr : expr . EQ expr
-	expr : expr . M_RIGHT expr
-	expr : expr . GRE expr
-	expr : expr . GRT expr
+	factor : num .  (52)
 
-	ADD  shift 58
-	SUB  shift 59
-	MUL  shift 60
-	DIV  shift 61
-	MOD  shift 62
-	INC  shift 63
-	DEC  shift 64
-	M_LEFT  shift 65
-	M_RIGHT  shift 66
-	EQ  shift 67
-	GRT  shift 68
-	LET  shift 69
-	GRE  shift 70
-	LEE  shift 71
-	NE  shift 72
-	.  reduce 43
+	.  reduce 52
 
 
 state 44
-	expr : expr . SUB expr
-	expr : expr . MOD expr
 	expr : expr . INC
 	expr : expr . DEC
-	expr : expr . ADD expr
 	expr : expr . MUL expr
 	expr : expr . DIV expr
+	expr : expr . MOD expr
+	expr : SUB expr .  (29)
+	expr : expr . ADD expr
+	expr : expr . SUB expr
 	expr : expr . OR expr
-	expr : expr . AND expr
-	expr : expr . M_LEFT expr
-	expr : expr . LEE expr
-	expr : expr . LET expr
-	expr : B_IOR expr .  (45)
-	expr : expr . NE expr
-	expr : expr . EQ expr
-	expr : expr . M_RIGHT expr
-	expr : expr . GRE expr
 	expr : expr . GRT expr
+	expr : expr . LEE expr
+	expr : expr . AND expr
+	expr : expr . LET expr
+	expr : expr . GRE expr
+	expr : expr . EQ expr
+	expr : expr . NE expr
+	expr : expr . M_LEFT expr
+	expr : expr . M_RIGHT expr
 
-	ADD  shift 58
-	SUB  shift 59
-	MUL  shift 60
-	DIV  shift 61
-	MOD  shift 62
-	INC  shift 63
-	DEC  shift 64
-	M_LEFT  shift 65
-	M_RIGHT  shift 66
-	EQ  shift 67
-	GRT  shift 68
-	LET  shift 69
-	GRE  shift 70
-	LEE  shift 71
-	NE  shift 72
-	.  reduce 45
+	INC  shift 64
+	DEC  shift 65
+	.  reduce 29
 
 
 state 45
-	expr : expr . SUB expr
-	expr : expr . MOD expr
 	expr : expr . INC
 	expr : expr . DEC
-	expr : expr . ADD expr
 	expr : expr . MUL expr
+	expr : INC expr .  (32)
 	expr : expr . DIV expr
+	expr : expr . MOD expr
+	expr : expr . ADD expr
+	expr : expr . SUB expr
 	expr : expr . OR expr
-	expr : expr . AND expr
-	expr : expr . M_LEFT expr
-	expr : expr . LEE expr
-	expr : expr . LET expr
-	expr : expr . NE expr
-	expr : B_EOR expr .  (44)
-	expr : expr . EQ expr
-	expr : expr . M_RIGHT expr
-	expr : expr . GRE expr
 	expr : expr . GRT expr
+	expr : expr . LEE expr
+	expr : expr . AND expr
+	expr : expr . LET expr
+	expr : expr . GRE expr
+	expr : expr . EQ expr
+	expr : expr . NE expr
+	expr : expr . M_LEFT expr
+	expr : expr . M_RIGHT expr
 
-	ADD  shift 58
-	SUB  shift 59
-	MUL  shift 60
-	DIV  shift 61
-	MOD  shift 62
-	INC  shift 63
-	DEC  shift 64
-	M_LEFT  shift 65
-	M_RIGHT  shift 66
-	EQ  shift 67
-	GRT  shift 68
-	LET  shift 69
-	GRE  shift 70
-	LEE  shift 71
-	NE  shift 72
-	.  reduce 44
+	INC  shift 64
+	DEC  shift 65
+	.  reduce 32
 
 
 state 46
-	expr : expr . SUB expr
-	expr : expr . MOD expr
 	expr : expr . INC
 	expr : expr . DEC
-	expr : expr . ADD expr
 	expr : expr . MUL expr
 	expr : expr . DIV expr
+	expr : expr . MOD expr
+	expr : expr . ADD expr
+	expr : expr . SUB expr
 	expr : expr . OR expr
-	expr : B_OPP expr .  (46)
-	expr : expr . AND expr
-	expr : expr . M_LEFT expr
-	expr : expr . LEE expr
-	expr : expr . LET expr
-	expr : expr . NE expr
-	expr : expr . EQ expr
-	expr : expr . M_RIGHT expr
-	expr : expr . GRE expr
 	expr : expr . GRT expr
+	expr : expr . LEE expr
+	expr : expr . AND expr
+	expr : expr . LET expr
+	expr : expr . GRE expr
+	expr : expr . EQ expr
+	expr : expr . NE expr
+	expr : expr . M_LEFT expr
+	expr : expr . M_RIGHT expr
+	expr : DEC expr .  (33)
 
-	.  reduce 46
+	INC  shift 64
+	DEC  shift 65
+	.  reduce 33
 
 
 state 47
+	expr : expr . INC
+	expr : expr . DEC
+	expr : expr . MUL expr
+	expr : expr . DIV expr
+	expr : expr . MOD expr
+	expr : expr . ADD expr
+	expr : expr . SUB expr
+	expr : expr . OR expr
+	expr : expr . GRT expr
+	expr : expr . LEE expr
+	expr : expr . AND expr
+	expr : expr . LET expr
+	expr : expr . GRE expr
+	expr : expr . EQ expr
+	expr : expr . NE expr
+	expr : B_AND expr .  (45)
+	expr : expr . M_LEFT expr
+	expr : expr . M_RIGHT expr
+
+	ADD  shift 59
+	SUB  shift 60
+	MUL  shift 61
+	DIV  shift 62
+	MOD  shift 63
+	INC  shift 64
+	DEC  shift 65
+	M_LEFT  shift 66
+	M_RIGHT  shift 67
+	EQ  shift 68
+	GRT  shift 69
+	LET  shift 70
+	GRE  shift 71
+	LEE  shift 72
+	NE  shift 73
+	.  reduce 45
+
+
+state 48
+	expr : expr . INC
+	expr : expr . DEC
+	expr : expr . MUL expr
+	expr : expr . DIV expr
+	expr : expr . MOD expr
+	expr : expr . ADD expr
+	expr : expr . SUB expr
+	expr : expr . OR expr
+	expr : expr . GRT expr
+	expr : expr . LEE expr
+	expr : B_OR expr .  (47)
+	expr : expr . AND expr
+	expr : expr . LET expr
+	expr : expr . GRE expr
+	expr : expr . EQ expr
+	expr : expr . NE expr
+	expr : expr . M_LEFT expr
+	expr : expr . M_RIGHT expr
+
+	ADD  shift 59
+	SUB  shift 60
+	MUL  shift 61
+	DIV  shift 62
+	MOD  shift 63
+	INC  shift 64
+	DEC  shift 65
+	M_LEFT  shift 66
+	M_RIGHT  shift 67
+	EQ  shift 68
+	GRT  shift 69
+	LET  shift 70
+	GRE  shift 71
+	LEE  shift 72
+	NE  shift 73
+	.  reduce 47
+
+
+state 49
+	expr : expr . INC
+	expr : expr . DEC
+	expr : expr . MUL expr
+	expr : expr . DIV expr
+	expr : expr . MOD expr
+	expr : expr . ADD expr
+	expr : expr . SUB expr
+	expr : expr . OR expr
+	expr : B_XOR expr .  (46)
+	expr : expr . GRT expr
+	expr : expr . LEE expr
+	expr : expr . AND expr
+	expr : expr . LET expr
+	expr : expr . GRE expr
+	expr : expr . EQ expr
+	expr : expr . NE expr
+	expr : expr . M_LEFT expr
+	expr : expr . M_RIGHT expr
+
+	ADD  shift 59
+	SUB  shift 60
+	MUL  shift 61
+	DIV  shift 62
+	MOD  shift 63
+	INC  shift 64
+	DEC  shift 65
+	M_LEFT  shift 66
+	M_RIGHT  shift 67
+	EQ  shift 68
+	GRT  shift 69
+	LET  shift 70
+	GRE  shift 71
+	LEE  shift 72
+	NE  shift 73
+	.  reduce 46
+
+
+state 50
+	expr : expr . INC
+	expr : expr . DEC
+	expr : expr . MUL expr
+	expr : expr . DIV expr
+	expr : expr . MOD expr
+	expr : expr . ADD expr
+	expr : expr . SUB expr
+	expr : expr . OR expr
+	expr : B_NOT expr .  (48)
+	expr : expr . GRT expr
+	expr : expr . LEE expr
+	expr : expr . AND expr
+	expr : expr . LET expr
+	expr : expr . GRE expr
+	expr : expr . EQ expr
+	expr : expr . NE expr
+	expr : expr . M_LEFT expr
+	expr : expr . M_RIGHT expr
+
+	.  reduce 48
+
+
+state 51
 	if_stmt : IF LPAREN . expr RPAREN stmt
 	if_stmt : IF LPAREN . expr RPAREN stmt ELSE stmt
 
@@ -863,22 +901,22 @@ state 47
 	INC  shift 10
 	DEC  shift 11
 	B_AND  shift 12
-	B_IOR  shift 13
-	B_EOR  shift 14
-	B_OPP  shift 15
-	LETTER  shift 21
-	NOT  shift 22
-	LPAREN  shift 24
+	B_OR  shift 13
+	B_XOR  shift 14
+	B_NOT  shift 15
+	LETTER  shift 23
+	NOT  shift 24
+	LPAREN  shift 26
 
-	expr  goto 77
-	id  goto 35
-	assign_stmt  goto 36
-	factor  goto 37
-	num  goto 38
+	expr  goto 83
 	letter  goto 39
+	id  goto 40
+	assign_stmt  goto 41
+	factor  goto 42
+	num  goto 43
 
 
-state 48
+state 52
 	while_stmt : WHILE LPAREN . expr RPAREN stmt
 
 	NUMBER  shift 7
@@ -887,29 +925,29 @@ state 48
 	INC  shift 10
 	DEC  shift 11
 	B_AND  shift 12
-	B_IOR  shift 13
-	B_EOR  shift 14
-	B_OPP  shift 15
-	LETTER  shift 21
-	NOT  shift 22
-	LPAREN  shift 24
+	B_OR  shift 13
+	B_XOR  shift 14
+	B_NOT  shift 15
+	LETTER  shift 23
+	NOT  shift 24
+	LPAREN  shift 26
 
-	expr  goto 78
-	id  goto 35
-	assign_stmt  goto 36
-	factor  goto 37
-	num  goto 38
+	expr  goto 84
 	letter  goto 39
+	id  goto 40
+	assign_stmt  goto 41
+	factor  goto 42
+	num  goto 43
 
 
-state 49
-	for_stmt : FOR LPAREN . expr SEMICOLON expr SEMICOLON RPAREN stmt
+state 53
 	for_stmt : FOR LPAREN . expr SEMICOLON expr SEMICOLON expr RPAREN stmt
 	for_stmt : FOR LPAREN . expr SEMICOLON SEMICOLON expr RPAREN stmt
 	for_stmt : FOR LPAREN . expr SEMICOLON SEMICOLON RPAREN stmt
-	for_stmt : FOR LPAREN . SEMICOLON SEMICOLON expr RPAREN stmt
-	for_stmt : FOR LPAREN . SEMICOLON expr SEMICOLON RPAREN stmt
+	for_stmt : FOR LPAREN . expr SEMICOLON expr SEMICOLON RPAREN stmt
 	for_stmt : FOR LPAREN . SEMICOLON expr SEMICOLON expr RPAREN stmt
+	for_stmt : FOR LPAREN . SEMICOLON expr SEMICOLON RPAREN stmt
+	for_stmt : FOR LPAREN . SEMICOLON SEMICOLON expr RPAREN stmt
 	for_stmt : FOR LPAREN . SEMICOLON SEMICOLON RPAREN stmt
 
 	NUMBER  shift 7
@@ -918,128 +956,140 @@ state 49
 	INC  shift 10
 	DEC  shift 11
 	B_AND  shift 12
-	B_IOR  shift 13
-	B_EOR  shift 14
-	B_OPP  shift 15
-	LETTER  shift 21
-	NOT  shift 22
-	LPAREN  shift 24
-	SEMICOLON  shift 79
+	B_OR  shift 13
+	B_XOR  shift 14
+	B_NOT  shift 15
+	LETTER  shift 23
+	NOT  shift 24
+	LPAREN  shift 26
+	SEMICOLON  shift 85
 
-	expr  goto 80
-	id  goto 35
-	assign_stmt  goto 36
-	factor  goto 37
-	num  goto 38
+	expr  goto 86
 	letter  goto 39
-
-
-state 50
-	expr : expr . SUB expr
-	expr : expr . MOD expr
-	expr : expr . INC
-	expr : expr . DEC
-	expr : expr . ADD expr
-	expr : expr . MUL expr
-	expr : expr . DIV expr
-	expr : expr . OR expr
-	expr : expr . AND expr
-	expr : expr . M_LEFT expr
-	expr : expr . LEE expr
-	expr : expr . LET expr
-	expr : expr . NE expr
-	expr : expr . EQ expr
-	expr : expr . M_RIGHT expr
-	expr : expr . GRE expr
-	expr : expr . GRT expr
-	expr : NOT expr .  (42)
-
-	.  reduce 42
-
-
-state 51
-	expr : expr . SUB expr
-	expr : expr . MOD expr
-	expr : expr . INC
-	expr : expr . DEC
-	expr : expr . ADD expr
-	expr : expr . MUL expr
-	expr : expr . DIV expr
-	factor : LPAREN expr . RPAREN
-	expr : expr . OR expr
-	expr : expr . AND expr
-	expr : expr . M_LEFT expr
-	expr : expr . LEE expr
-	expr : expr . LET expr
-	expr : expr . NE expr
-	expr : expr . EQ expr
-	expr : expr . M_RIGHT expr
-	expr : expr . GRE expr
-	expr : expr . GRT expr
-
-	ADD  shift 58
-	SUB  shift 59
-	MUL  shift 60
-	DIV  shift 61
-	MOD  shift 62
-	INC  shift 63
-	DEC  shift 64
-	M_LEFT  shift 65
-	M_RIGHT  shift 66
-	EQ  shift 67
-	GRT  shift 68
-	LET  shift 69
-	GRE  shift 70
-	LEE  shift 71
-	NE  shift 72
-	AND  shift 73
-	OR  shift 74
-	RPAREN  shift 81
-
-
-state 52
-	decl_stmt : type idlist .  (13)
-
-	.  reduce 13
-
-
-state 53
-	idlist : id . COMMA idlist
-	idlist : id .  (18)
-	assign_stmt : id . ASSIGN expr
-
-	COMMA  shift 82
-	ASSIGN  shift 76
-	.  reduce 18
+	id  goto 40
+	assign_stmt  goto 41
+	factor  goto 42
+	num  goto 43
 
 
 state 54
-	idlist : assign_stmt . COMMA idlist
-	idlist : assign_stmt .  (19)
+	in_stmt : IN LPAREN . expr RPAREN SEMICOLON
 
-	COMMA  shift 83
-	.  reduce 19
+	NUMBER  shift 7
+	ID  shift 8
+	SUB  shift 9
+	INC  shift 10
+	DEC  shift 11
+	B_AND  shift 12
+	B_OR  shift 13
+	B_XOR  shift 14
+	B_NOT  shift 15
+	LETTER  shift 23
+	NOT  shift 24
+	LPAREN  shift 26
+
+	expr  goto 87
+	letter  goto 39
+	id  goto 40
+	assign_stmt  goto 41
+	factor  goto 42
+	num  goto 43
 
 
 state 55
-	stmts : stmt stmts .  (4)
+	out_stmt : OUT LPAREN . expr RPAREN SEMICOLON
 
-	.  reduce 4
+	NUMBER  shift 7
+	ID  shift 8
+	SUB  shift 9
+	INC  shift 10
+	DEC  shift 11
+	B_AND  shift 12
+	B_OR  shift 13
+	B_XOR  shift 14
+	B_NOT  shift 15
+	LETTER  shift 23
+	NOT  shift 24
+	LPAREN  shift 26
+
+	expr  goto 88
+	letter  goto 39
+	id  goto 40
+	assign_stmt  goto 41
+	factor  goto 42
+	num  goto 43
 
 
 state 56
-	braced_stmt : LBRACE stmts RBRACE .  (2)
+	expr : expr . INC
+	expr : expr . DEC
+	expr : expr . MUL expr
+	expr : expr . DIV expr
+	expr : expr . MOD expr
+	expr : expr . ADD expr
+	expr : expr . SUB expr
+	expr : expr . OR expr
+	expr : expr . GRT expr
+	expr : expr . LEE expr
+	expr : NOT expr .  (44)
+	expr : expr . AND expr
+	expr : expr . LET expr
+	expr : expr . GRE expr
+	expr : expr . EQ expr
+	expr : expr . NE expr
+	expr : expr . M_LEFT expr
+	expr : expr . M_RIGHT expr
 
-	.  reduce 2
+	.  reduce 44
 
 
 state 57
+	expr : expr . INC
+	expr : expr . DEC
+	expr : expr . MUL expr
+	expr : expr . DIV expr
+	expr : expr . MOD expr
+	expr : expr . ADD expr
+	expr : expr . SUB expr
+	expr : expr . OR expr
+	expr : expr . GRT expr
+	expr : expr . LEE expr
+	expr : expr . AND expr
+	expr : expr . LET expr
+	expr : expr . GRE expr
+	expr : expr . EQ expr
+	expr : expr . NE expr
+	factor : LPAREN expr . RPAREN
+	expr : expr . M_LEFT expr
+	expr : expr . M_RIGHT expr
+
+	ADD  shift 59
+	SUB  shift 60
+	MUL  shift 61
+	DIV  shift 62
+	MOD  shift 63
+	INC  shift 64
+	DEC  shift 65
+	M_LEFT  shift 66
+	M_RIGHT  shift 67
+	EQ  shift 68
+	GRT  shift 69
+	LET  shift 70
+	GRE  shift 71
+	LEE  shift 72
+	NE  shift 73
+	AND  shift 74
+	OR  shift 75
+	RPAREN  shift 89
+
+
+state 58
 	stmt : decl_stmt SEMICOLON .  (6)
 
 	.  reduce 6
 
 
-state 58
+state 59
 	expr : expr ADD . expr
 
 	NUMBER  shift 7
@@ -1048,22 +1098,22 @@ state 58
 	INC  shift 10
 	DEC  shift 11
 	B_AND  shift 12
-	B_IOR  shift 13
-	B_EOR  shift 14
-	B_OPP  shift 15
-	LETTER  shift 21
-	NOT  shift 22
-	LPAREN  shift 24
+	B_OR  shift 13
+	B_XOR  shift 14
+	B_NOT  shift 15
+	LETTER  shift 23
+	NOT  shift 24
+	LPAREN  shift 26
 
-	expr  goto 84
-	id  goto 35
-	assign_stmt  goto 36
-	factor  goto 37
-	num  goto 38
+	expr  goto 90
 	letter  goto 39
+	id  goto 40
+	assign_stmt  goto 41
+	factor  goto 42
+	num  goto 43
 
 
-state 59
+state 60
 	expr : expr SUB . expr
 
 	NUMBER  shift 7
@@ -1072,22 +1122,22 @@ state 59
 	INC  shift 10
 	DEC  shift 11
 	B_AND  shift 12
-	B_IOR  shift 13
-	B_EOR  shift 14
-	B_OPP  shift 15
-	LETTER  shift 21
-	NOT  shift 22
-	LPAREN  shift 24
+	B_OR  shift 13
+	B_XOR  shift 14
+	B_NOT  shift 15
+	LETTER  shift 23
+	NOT  shift 24
+	LPAREN  shift 26
 
-	expr  goto 85
-	id  goto 35
-	assign_stmt  goto 36
-	factor  goto 37
-	num  goto 38
+	expr  goto 91
 	letter  goto 39
+	id  goto 40
+	assign_stmt  goto 41
+	factor  goto 42
+	num  goto 43
 
 
-state 60
+state 61
 	expr : expr MUL . expr
 
 	NUMBER  shift 7
@@ -1096,22 +1146,22 @@ state 60
 	INC  shift 10
 	DEC  shift 11
 	B_AND  shift 12
-	B_IOR  shift 13
-	B_EOR  shift 14
-	B_OPP  shift 15
-	LETTER  shift 21
-	NOT  shift 22
-	LPAREN  shift 24
+	B_OR  shift 13
+	B_XOR  shift 14
+	B_NOT  shift 15
+	LETTER  shift 23
+	NOT  shift 24
+	LPAREN  shift 26
 
-	expr  goto 86
-	id  goto 35
-	assign_stmt  goto 36
-	factor  goto 37
-	num  goto 38
+	expr  goto 92
 	letter  goto 39
+	id  goto 40
+	assign_stmt  goto 41
+	factor  goto 42
+	num  goto 43
 
 
-state 61
+state 62
 	expr : expr DIV . expr
 
 	NUMBER  shift 7
@@ -1120,22 +1170,22 @@ state 61
 	INC  shift 10
 	DEC  shift 11
 	B_AND  shift 12
-	B_IOR  shift 13
-	B_EOR  shift 14
-	B_OPP  shift 15
-	LETTER  shift 21
-	NOT  shift 22
-	LPAREN  shift 24
+	B_OR  shift 13
+	B_XOR  shift 14
+	B_NOT  shift 15
+	LETTER  shift 23
+	NOT  shift 24
+	LPAREN  shift 26
 
-	expr  goto 87
-	id  goto 35
-	assign_stmt  goto 36
-	factor  goto 37
-	num  goto 38
+	expr  goto 93
 	letter  goto 39
+	id  goto 40
+	assign_stmt  goto 41
+	factor  goto 42
+	num  goto 43
 
 
-state 62
+state 63
 	expr : expr MOD . expr
 
 	NUMBER  shift 7
@@ -1144,34 +1194,34 @@ state 62
 	INC  shift 10
 	DEC  shift 11
 	B_AND  shift 12
-	B_IOR  shift 13
-	B_EOR  shift 14
-	B_OPP  shift 15
-	LETTER  shift 21
-	NOT  shift 22
-	LPAREN  shift 24
+	B_OR  shift 13
+	B_XOR  shift 14
+	B_NOT  shift 15
+	LETTER  shift 23
+	NOT  shift 24
+	LPAREN  shift 26
 
-	expr  goto 88
-	id  goto 35
-	assign_stmt  goto 36
-	factor  goto 37
-	num  goto 38
+	expr  goto 94
 	letter  goto 39
-
-
-state 63
-	expr : expr INC .  (28)
-
-	.  reduce 28
+	id  goto 40
+	assign_stmt  goto 41
+	factor  goto 42
+	num  goto 43
 
 
 state 64
-	expr : expr DEC .  (29)
+	expr : expr INC .  (30)
 
-	.  reduce 29
+	.  reduce 30
 
 
 state 65
+	expr : expr DEC .  (31)
+
+	.  reduce 31
+
+
+state 66
 	expr : expr M_LEFT . expr
 
 	NUMBER  shift 7
@@ -1180,22 +1230,22 @@ state 65
 	INC  shift 10
 	DEC  shift 11
 	B_AND  shift 12
-	B_IOR  shift 13
-	B_EOR  shift 14
-	B_OPP  shift 15
-	LETTER  shift 21
-	NOT  shift 22
-	LPAREN  shift 24
+	B_OR  shift 13
+	B_XOR  shift 14
+	B_NOT  shift 15
+	LETTER  shift 23
+	NOT  shift 24
+	LPAREN  shift 26
 
-	expr  goto 89
-	id  goto 35
-	assign_stmt  goto 36
-	factor  goto 37
-	num  goto 38
+	expr  goto 95
 	letter  goto 39
+	id  goto 40
+	assign_stmt  goto 41
+	factor  goto 42
+	num  goto 43
 
 
-state 66
+state 67
 	expr : expr M_RIGHT . expr
 
 	NUMBER  shift 7
@@ -1204,22 +1254,22 @@ state 66
 	INC  shift 10
 	DEC  shift 11
 	B_AND  shift 12
-	B_IOR  shift 13
-	B_EOR  shift 14
-	B_OPP  shift 15
-	LETTER  shift 21
-	NOT  shift 22
-	LPAREN  shift 24
+	B_OR  shift 13
+	B_XOR  shift 14
+	B_NOT  shift 15
+	LETTER  shift 23
+	NOT  shift 24
+	LPAREN  shift 26
 
-	expr  goto 90
-	id  goto 35
-	assign_stmt  goto 36
-	factor  goto 37
-	num  goto 38
+	expr  goto 96
 	letter  goto 39
+	id  goto 40
+	assign_stmt  goto 41
+	factor  goto 42
+	num  goto 43
 
 
-state 67
+state 68
 	expr : expr EQ . expr
 
 	NUMBER  shift 7
@@ -1228,22 +1278,22 @@ state 67
 	INC  shift 10
 	DEC  shift 11
 	B_AND  shift 12
-	B_IOR  shift 13
-	B_EOR  shift 14
-	B_OPP  shift 15
-	LETTER  shift 21
-	NOT  shift 22
-	LPAREN  shift 24
+	B_OR  shift 13
+	B_XOR  shift 14
+	B_NOT  shift 15
+	LETTER  shift 23
+	NOT  shift 24
+	LPAREN  shift 26
 
-	expr  goto 91
-	id  goto 35
-	assign_stmt  goto 36
-	factor  goto 37
-	num  goto 38
+	expr  goto 97
 	letter  goto 39
+	id  goto 40
+	assign_stmt  goto 41
+	factor  goto 42
+	num  goto 43
 
 
-state 68
+state 69
 	expr : expr GRT . expr
 
 	NUMBER  shift 7
@@ -1252,22 +1302,22 @@ state 68
 	INC  shift 10
 	DEC  shift 11
 	B_AND  shift 12
-	B_IOR  shift 13
-	B_EOR  shift 14
-	B_OPP  shift 15
-	LETTER  shift 21
-	NOT  shift 22
-	LPAREN  shift 24
+	B_OR  shift 13
+	B_XOR  shift 14
+	B_NOT  shift 15
+	LETTER  shift 23
+	NOT  shift 24
+	LPAREN  shift 26
 
-	expr  goto 92
-	id  goto 35
-	assign_stmt  goto 36
-	factor  goto 37
-	num  goto 38
+	expr  goto 98
 	letter  goto 39
+	id  goto 40
+	assign_stmt  goto 41
+	factor  goto 42
+	num  goto 43
 
 
-state 69
+state 70
 	expr : expr LET . expr
 
 	NUMBER  shift 7
@@ -1276,22 +1326,22 @@ state 69
 	INC  shift 10
 	DEC  shift 11
 	B_AND  shift 12
-	B_IOR  shift 13
-	B_EOR  shift 14
-	B_OPP  shift 15
-	LETTER  shift 21
-	NOT  shift 22
-	LPAREN  shift 24
+	B_OR  shift 13
+	B_XOR  shift 14
+	B_NOT  shift 15
+	LETTER  shift 23
+	NOT  shift 24
+	LPAREN  shift 26
 
-	expr  goto 93
-	id  goto 35
-	assign_stmt  goto 36
-	factor  goto 37
-	num  goto 38
+	expr  goto 99
 	letter  goto 39
+	id  goto 40
+	assign_stmt  goto 41
+	factor  goto 42
+	num  goto 43
 
 
-state 70
+state 71
 	expr : expr GRE . expr
 
 	NUMBER  shift 7
@@ -1300,22 +1350,22 @@ state 70
 	INC  shift 10
 	DEC  shift 11
 	B_AND  shift 12
-	B_IOR  shift 13
-	B_EOR  shift 14
-	B_OPP  shift 15
-	LETTER  shift 21
-	NOT  shift 22
-	LPAREN  shift 24
+	B_OR  shift 13
+	B_XOR  shift 14
+	B_NOT  shift 15
+	LETTER  shift 23
+	NOT  shift 24
+	LPAREN  shift 26
 
-	expr  goto 94
-	id  goto 35
-	assign_stmt  goto 36
-	factor  goto 37
-	num  goto 38
+	expr  goto 100
 	letter  goto 39
+	id  goto 40
+	assign_stmt  goto 41
+	factor  goto 42
+	num  goto 43
 
 
-state 71
+state 72
 	expr : expr LEE . expr
 
 	NUMBER  shift 7
@@ -1324,22 +1374,22 @@ state 71
 	INC  shift 10
 	DEC  shift 11
 	B_AND  shift 12
-	B_IOR  shift 13
-	B_EOR  shift 14
-	B_OPP  shift 15
-	LETTER  shift 21
-	NOT  shift 22
-	LPAREN  shift 24
+	B_OR  shift 13
+	B_XOR  shift 14
+	B_NOT  shift 15
+	LETTER  shift 23
+	NOT  shift 24
+	LPAREN  shift 26
 
-	expr  goto 95
-	id  goto 35
-	assign_stmt  goto 36
-	factor  goto 37
-	num  goto 38
+	expr  goto 101
 	letter  goto 39
+	id  goto 40
+	assign_stmt  goto 41
+	factor  goto 42
+	num  goto 43
 
 
-state 72
+state 73
 	expr : expr NE . expr
 
 	NUMBER  shift 7
@@ -1348,22 +1398,22 @@ state 72
 	INC  shift 10
 	DEC  shift 11
 	B_AND  shift 12
-	B_IOR  shift 13
-	B_EOR  shift 14
-	B_OPP  shift 15
-	LETTER  shift 21
-	NOT  shift 22
-	LPAREN  shift 24
+	B_OR  shift 13
+	B_XOR  shift 14
+	B_NOT  shift 15
+	LETTER  shift 23
+	NOT  shift 24
+	LPAREN  shift 26
 
-	expr  goto 96
-	id  goto 35
-	assign_stmt  goto 36
-	factor  goto 37
-	num  goto 38
+	expr  goto 102
 	letter  goto 39
+	id  goto 40
+	assign_stmt  goto 41
+	factor  goto 42
+	num  goto 43
 
 
-state 73
+state 74
 	expr : expr AND . expr
 
 	NUMBER  shift 7
@@ -1372,22 +1422,22 @@ state 73
 	INC  shift 10
 	DEC  shift 11
 	B_AND  shift 12
-	B_IOR  shift 13
-	B_EOR  shift 14
-	B_OPP  shift 15
-	LETTER  shift 21
-	NOT  shift 22
-	LPAREN  shift 24
+	B_OR  shift 13
+	B_XOR  shift 14
+	B_NOT  shift 15
+	LETTER  shift 23
+	NOT  shift 24
+	LPAREN  shift 26
 
-	expr  goto 97
-	id  goto 35
-	assign_stmt  goto 36
-	factor  goto 37
-	num  goto 38
+	expr  goto 103
 	letter  goto 39
+	id  goto 40
+	assign_stmt  goto 41
+	factor  goto 42
+	num  goto 43
 
 
-state 74
+state 75
 	expr : expr OR . expr
 
 	NUMBER  shift 7
@@ -1396,28 +1446,64 @@ state 74
 	INC  shift 10
 	DEC  shift 11
 	B_AND  shift 12
-	B_IOR  shift 13
-	B_EOR  shift 14
-	B_OPP  shift 15
-	LETTER  shift 21
-	NOT  shift 22
-	LPAREN  shift 24
+	B_OR  shift 13
+	B_XOR  shift 14
+	B_NOT  shift 15
+	LETTER  shift 23
+	NOT  shift 24
+	LPAREN  shift 26
 
-	expr  goto 98
-	id  goto 35
-	assign_stmt  goto 36
-	factor  goto 37
-	num  goto 38
+	expr  goto 104
 	letter  goto 39
-
-
-state 75
-	stmt : expr SEMICOLON .  (11)
-
-	.  reduce 11
+	id  goto 40
+	assign_stmt  goto 41
+	factor  goto 42
+	num  goto 43
 
 
 state 76
+	stmt : expr SEMICOLON .  (13)
+
+	.  reduce 13
+
+
+state 77
+	decl_stmt : type idlist .  (15)
+
+	.  reduce 15
+
+
+state 78
+	assign_stmt : id . ASSIGN expr
+	idlist : id .  (20)
+	idlist : id . COMMA idlist
+
+	COMMA  shift 105
+	ASSIGN  shift 82
+	.  reduce 20
+
+
+state 79
+	idlist : assign_stmt . COMMA idlist
+	idlist : assign_stmt .  (21)
+
+	COMMA  shift 106
+	.  reduce 21
+
+
+state 80
+	braced_stmt : LBRACE comp_stmt RBRACE .  (2)
+
+	.  reduce 2
+
+
+state 81
+	comp_stmt : stmt comp_stmt .  (4)
+
+	.  reduce 4
+
+
+state 82
 	assign_stmt : id ASSIGN . expr
 
 	NUMBER  shift 7
@@ -1426,106 +1512,106 @@ state 76
 	INC  shift 10
 	DEC  shift 11
 	B_AND  shift 12
-	B_IOR  shift 13
-	B_EOR  shift 14
-	B_OPP  shift 15
-	LETTER  shift 21
-	NOT  shift 22
-	LPAREN  shift 24
+	B_OR  shift 13
+	B_XOR  shift 14
+	B_NOT  shift 15
+	LETTER  shift 23
+	NOT  shift 24
+	LPAREN  shift 26
 
-	expr  goto 99
-	id  goto 35
-	assign_stmt  goto 36
-	factor  goto 37
-	num  goto 38
+	expr  goto 107
 	letter  goto 39
+	id  goto 40
+	assign_stmt  goto 41
+	factor  goto 42
+	num  goto 43
 
 
-state 77
-	expr : expr . SUB expr
-	expr : expr . MOD expr
+state 83
 	expr : expr . INC
 	expr : expr . DEC
-	expr : expr . ADD expr
 	expr : expr . MUL expr
 	expr : expr . DIV expr
+	expr : expr . MOD expr
+	expr : expr . ADD expr
+	expr : expr . SUB expr
 	expr : expr . OR expr
-	expr : expr . AND expr
-	expr : expr . M_LEFT expr
-	expr : expr . LEE expr
-	expr : expr . LET expr
-	expr : expr . NE expr
-	expr : expr . EQ expr
 	if_stmt : IF LPAREN expr . RPAREN stmt
 	if_stmt : IF LPAREN expr . RPAREN stmt ELSE stmt
-	expr : expr . M_RIGHT expr
-	expr : expr . GRE expr
 	expr : expr . GRT expr
+	expr : expr . LEE expr
+	expr : expr . AND expr
+	expr : expr . LET expr
+	expr : expr . GRE expr
+	expr : expr . EQ expr
+	expr : expr . NE expr
+	expr : expr . M_LEFT expr
+	expr : expr . M_RIGHT expr
 
-	ADD  shift 58
-	SUB  shift 59
-	MUL  shift 60
-	DIV  shift 61
-	MOD  shift 62
-	INC  shift 63
-	DEC  shift 64
-	M_LEFT  shift 65
-	M_RIGHT  shift 66
-	EQ  shift 67
-	GRT  shift 68
-	LET  shift 69
-	GRE  shift 70
-	LEE  shift 71
-	NE  shift 72
-	AND  shift 73
-	OR  shift 74
-	RPAREN  shift 100
+	ADD  shift 59
+	SUB  shift 60
+	MUL  shift 61
+	DIV  shift 62
+	MOD  shift 63
+	INC  shift 64
+	DEC  shift 65
+	M_LEFT  shift 66
+	M_RIGHT  shift 67
+	EQ  shift 68
+	GRT  shift 69
+	LET  shift 70
+	GRE  shift 71
+	LEE  shift 72
+	NE  shift 73
+	AND  shift 74
+	OR  shift 75
+	RPAREN  shift 108
 
 
-state 78
-	expr : expr . SUB expr
-	expr : expr . MOD expr
+state 84
 	expr : expr . INC
 	expr : expr . DEC
-	expr : expr . ADD expr
 	expr : expr . MUL expr
 	expr : expr . DIV expr
+	expr : expr . MOD expr
+	expr : expr . ADD expr
+	expr : expr . SUB expr
 	expr : expr . OR expr
-	expr : expr . AND expr
-	expr : expr . M_LEFT expr
-	expr : expr . LEE expr
-	expr : expr . LET expr
-	expr : expr . NE expr
-	expr : expr . EQ expr
 	while_stmt : WHILE LPAREN expr . RPAREN stmt
-	expr : expr . M_RIGHT expr
-	expr : expr . GRE expr
 	expr : expr . GRT expr
+	expr : expr . LEE expr
+	expr : expr . AND expr
+	expr : expr . LET expr
+	expr : expr . GRE expr
+	expr : expr . EQ expr
+	expr : expr . NE expr
+	expr : expr . M_LEFT expr
+	expr : expr . M_RIGHT expr
 
-	ADD  shift 58
-	SUB  shift 59
-	MUL  shift 60
-	DIV  shift 61
-	MOD  shift 62
-	INC  shift 63
-	DEC  shift 64
-	M_LEFT  shift 65
-	M_RIGHT  shift 66
-	EQ  shift 67
-	GRT  shift 68
-	LET  shift 69
-	GRE  shift 70
-	LEE  shift 71
-	NE  shift 72
-	AND  shift 73
-	OR  shift 74
-	RPAREN  shift 101
+	ADD  shift 59
+	SUB  shift 60
+	MUL  shift 61
+	DIV  shift 62
+	MOD  shift 63
+	INC  shift 64
+	DEC  shift 65
+	M_LEFT  shift 66
+	M_RIGHT  shift 67
+	EQ  shift 68
+	GRT  shift 69
+	LET  shift 70
+	GRE  shift 71
+	LEE  shift 72
+	NE  shift 73
+	AND  shift 74
+	OR  shift 75
+	RPAREN  shift 109
 
 
-state 79
-	for_stmt : FOR LPAREN SEMICOLON . SEMICOLON expr RPAREN stmt
-	for_stmt : FOR LPAREN SEMICOLON . expr SEMICOLON RPAREN stmt
+state 85
 	for_stmt : FOR LPAREN SEMICOLON . expr SEMICOLON expr RPAREN stmt
+	for_stmt : FOR LPAREN SEMICOLON . expr SEMICOLON RPAREN stmt
+	for_stmt : FOR LPAREN SEMICOLON . SEMICOLON expr RPAREN stmt
 	for_stmt : FOR LPAREN SEMICOLON . SEMICOLON RPAREN stmt
 
 	NUMBER  shift 7
@@ -1534,600 +1620,680 @@ state 79
 	INC  shift 10
 	DEC  shift 11
 	B_AND  shift 12
-	B_IOR  shift 13
-	B_EOR  shift 14
-	B_OPP  shift 15
-	LETTER  shift 21
-	NOT  shift 22
-	LPAREN  shift 24
-	SEMICOLON  shift 102
+	B_OR  shift 13
+	B_XOR  shift 14
+	B_NOT  shift 15
+	LETTER  shift 23
+	NOT  shift 24
+	LPAREN  shift 26
+	SEMICOLON  shift 110
 
-	expr  goto 103
-	id  goto 35
-	assign_stmt  goto 36
-	factor  goto 37
-	num  goto 38
+	expr  goto 111
 	letter  goto 39
+	id  goto 40
+	assign_stmt  goto 41
+	factor  goto 42
+	num  goto 43
 
 
-state 80
-	expr : expr . SUB expr
-	expr : expr . MOD expr
+state 86
 	expr : expr . INC
 	expr : expr . DEC
-	expr : expr . ADD expr
 	expr : expr . MUL expr
 	expr : expr . DIV expr
+	expr : expr . MOD expr
+	expr : expr . ADD expr
+	expr : expr . SUB expr
 	expr : expr . OR expr
-	expr : expr . AND expr
-	expr : expr . M_LEFT expr
-	expr : expr . LEE expr
-	expr : expr . LET expr
-	expr : expr . NE expr
-	expr : expr . EQ expr
-	for_stmt : FOR LPAREN expr . SEMICOLON expr SEMICOLON RPAREN stmt
-	expr : expr . M_RIGHT expr
-	expr : expr . GRE expr
-	expr : expr . GRT expr
 	for_stmt : FOR LPAREN expr . SEMICOLON expr SEMICOLON expr RPAREN stmt
 	for_stmt : FOR LPAREN expr . SEMICOLON SEMICOLON expr RPAREN stmt
 	for_stmt : FOR LPAREN expr . SEMICOLON SEMICOLON RPAREN stmt
+	for_stmt : FOR LPAREN expr . SEMICOLON expr SEMICOLON RPAREN stmt
+	expr : expr . GRT expr
+	expr : expr . LEE expr
+	expr : expr . AND expr
+	expr : expr . LET expr
+	expr : expr . GRE expr
+	expr : expr . EQ expr
+	expr : expr . NE expr
+	expr : expr . M_LEFT expr
+	expr : expr . M_RIGHT expr
 
-	ADD  shift 58
-	SUB  shift 59
-	MUL  shift 60
-	DIV  shift 61
-	MOD  shift 62
-	INC  shift 63
-	DEC  shift 64
-	M_LEFT  shift 65
-	M_RIGHT  shift 66
-	EQ  shift 67
-	GRT  shift 68
-	LET  shift 69
-	GRE  shift 70
-	LEE  shift 71
-	NE  shift 72
-	AND  shift 73
-	OR  shift 74
-	SEMICOLON  shift 104
+	ADD  shift 59
+	SUB  shift 60
+	MUL  shift 61
+	DIV  shift 62
+	MOD  shift 63
+	INC  shift 64
+	DEC  shift 65
+	M_LEFT  shift 66
+	M_RIGHT  shift 67
+	EQ  shift 68
+	GRT  shift 69
+	LET  shift 70
+	GRE  shift 71
+	LEE  shift 72
+	NE  shift 73
+	AND  shift 74
+	OR  shift 75
+	SEMICOLON  shift 112
 
 
-state 81
-	factor : LPAREN expr RPAREN .  (52)
+state 87
+	expr : expr . INC
+	expr : expr . DEC
+	expr : expr . MUL expr
+	expr : expr . DIV expr
+	expr : expr . MOD expr
+	expr : expr . ADD expr
+	expr : expr . SUB expr
+	expr : expr . OR expr
+	in_stmt : IN LPAREN expr . RPAREN SEMICOLON
+	expr : expr . GRT expr
+	expr : expr . LEE expr
+	expr : expr . AND expr
+	expr : expr . LET expr
+	expr : expr . GRE expr
+	expr : expr . EQ expr
+	expr : expr . NE expr
+	expr : expr . M_LEFT expr
+	expr : expr . M_RIGHT expr
 
-	.  reduce 52
+	ADD  shift 59
+	SUB  shift 60
+	MUL  shift 61
+	DIV  shift 62
+	MOD  shift 63
+	INC  shift 64
+	DEC  shift 65
+	M_LEFT  shift 66
+	M_RIGHT  shift 67
+	EQ  shift 68
+	GRT  shift 69
+	LET  shift 70
+	GRE  shift 71
+	LEE  shift 72
+	NE  shift 73
+	AND  shift 74
+	OR  shift 75
+	RPAREN  shift 113
 
 
-state 82
+state 88
+	expr : expr . INC
+	expr : expr . DEC
+	expr : expr . MUL expr
+	expr : expr . DIV expr
+	expr : expr . MOD expr
+	expr : expr . ADD expr
+	expr : expr . SUB expr
+	expr : expr . OR expr
+	out_stmt : OUT LPAREN expr . RPAREN SEMICOLON
+	expr : expr . GRT expr
+	expr : expr . LEE expr
+	expr : expr . AND expr
+	expr : expr . LET expr
+	expr : expr . GRE expr
+	expr : expr . EQ expr
+	expr : expr . NE expr
+	expr : expr . M_LEFT expr
+	expr : expr . M_RIGHT expr
+
+	ADD  shift 59
+	SUB  shift 60
+	MUL  shift 61
+	DIV  shift 62
+	MOD  shift 63
+	INC  shift 64
+	DEC  shift 65
+	M_LEFT  shift 66
+	M_RIGHT  shift 67
+	EQ  shift 68
+	GRT  shift 69
+	LET  shift 70
+	GRE  shift 71
+	LEE  shift 72
+	NE  shift 73
+	AND  shift 74
+	OR  shift 75
+	RPAREN  shift 114
+
+
+state 89
+	factor : LPAREN expr RPAREN .  (54)
+
+	.  reduce 54
+
+
+state 90
+	expr : expr . INC
+	expr : expr . DEC
+	expr : expr . MUL expr
+	expr : expr . DIV expr
+	expr : expr . MOD expr
+	expr : expr ADD expr .  (24)
+	expr : expr . ADD expr
+	expr : expr . SUB expr
+	expr : expr . OR expr
+	expr : expr . GRT expr
+	expr : expr . LEE expr
+	expr : expr . AND expr
+	expr : expr . LET expr
+	expr : expr . GRE expr
+	expr : expr . EQ expr
+	expr : expr . NE expr
+	expr : expr . M_LEFT expr
+	expr : expr . M_RIGHT expr
+
+	MUL  shift 61
+	DIV  shift 62
+	MOD  shift 63
+	INC  shift 64
+	DEC  shift 65
+	.  reduce 24
+
+
+state 91
+	expr : expr . INC
+	expr : expr . DEC
+	expr : expr . MUL expr
+	expr : expr . DIV expr
+	expr : expr . MOD expr
+	expr : expr . ADD expr
+	expr : expr SUB expr .  (25)
+	expr : expr . SUB expr
+	expr : expr . OR expr
+	expr : expr . GRT expr
+	expr : expr . LEE expr
+	expr : expr . AND expr
+	expr : expr . LET expr
+	expr : expr . GRE expr
+	expr : expr . EQ expr
+	expr : expr . NE expr
+	expr : expr . M_LEFT expr
+	expr : expr . M_RIGHT expr
+
+	MUL  shift 61
+	DIV  shift 62
+	MOD  shift 63
+	INC  shift 64
+	DEC  shift 65
+	.  reduce 25
+
+
+state 92
+	expr : expr . INC
+	expr : expr . DEC
+	expr : expr MUL expr .  (26)
+	expr : expr . MUL expr
+	expr : expr . DIV expr
+	expr : expr . MOD expr
+	expr : expr . ADD expr
+	expr : expr . SUB expr
+	expr : expr . OR expr
+	expr : expr . GRT expr
+	expr : expr . LEE expr
+	expr : expr . AND expr
+	expr : expr . LET expr
+	expr : expr . GRE expr
+	expr : expr . EQ expr
+	expr : expr . NE expr
+	expr : expr . M_LEFT expr
+	expr : expr . M_RIGHT expr
+
+	INC  shift 64
+	DEC  shift 65
+	.  reduce 26
+
+
+state 93
+	expr : expr . INC
+	expr : expr . DEC
+	expr : expr . MUL expr
+	expr : expr DIV expr .  (27)
+	expr : expr . DIV expr
+	expr : expr . MOD expr
+	expr : expr . ADD expr
+	expr : expr . SUB expr
+	expr : expr . OR expr
+	expr : expr . GRT expr
+	expr : expr . LEE expr
+	expr : expr . AND expr
+	expr : expr . LET expr
+	expr : expr . GRE expr
+	expr : expr . EQ expr
+	expr : expr . NE expr
+	expr : expr . M_LEFT expr
+	expr : expr . M_RIGHT expr
+
+	INC  shift 64
+	DEC  shift 65
+	.  reduce 27
+
+
+state 94
+	expr : expr . INC
+	expr : expr . DEC
+	expr : expr . MUL expr
+	expr : expr . DIV expr
+	expr : expr MOD expr .  (28)
+	expr : expr . MOD expr
+	expr : expr . ADD expr
+	expr : expr . SUB expr
+	expr : expr . OR expr
+	expr : expr . GRT expr
+	expr : expr . LEE expr
+	expr : expr . AND expr
+	expr : expr . LET expr
+	expr : expr . GRE expr
+	expr : expr . EQ expr
+	expr : expr . NE expr
+	expr : expr . M_LEFT expr
+	expr : expr . M_RIGHT expr
+
+	INC  shift 64
+	DEC  shift 65
+	.  reduce 28
+
+
+state 95
+	expr : expr . INC
+	expr : expr . DEC
+	expr : expr . MUL expr
+	expr : expr . DIV expr
+	expr : expr . MOD expr
+	expr : expr . ADD expr
+	expr : expr . SUB expr
+	expr : expr . OR expr
+	expr : expr . GRT expr
+	expr : expr . LEE expr
+	expr : expr . AND expr
+	expr : expr . LET expr
+	expr : expr . GRE expr
+	expr : expr . EQ expr
+	expr : expr . NE expr
+	expr : expr M_LEFT expr .  (34)
+	expr : expr . M_LEFT expr
+	expr : expr . M_RIGHT expr
+
+	ADD  shift 59
+	SUB  shift 60
+	MUL  shift 61
+	DIV  shift 62
+	MOD  shift 63
+	INC  shift 64
+	DEC  shift 65
+	.  reduce 34
+
+
+state 96
+	expr : expr . INC
+	expr : expr . DEC
+	expr : expr . MUL expr
+	expr : expr . DIV expr
+	expr : expr . MOD expr
+	expr : expr . ADD expr
+	expr : expr . SUB expr
+	expr : expr . OR expr
+	expr : expr . GRT expr
+	expr : expr . LEE expr
+	expr : expr . AND expr
+	expr : expr . LET expr
+	expr : expr . GRE expr
+	expr : expr . EQ expr
+	expr : expr . NE expr
+	expr : expr . M_LEFT expr
+	expr : expr M_RIGHT expr .  (35)
+	expr : expr . M_RIGHT expr
+
+	ADD  shift 59
+	SUB  shift 60
+	MUL  shift 61
+	DIV  shift 62
+	MOD  shift 63
+	INC  shift 64
+	DEC  shift 65
+	.  reduce 35
+
+
+state 97
+	expr : expr . INC
+	expr : expr . DEC
+	expr : expr . MUL expr
+	expr : expr . DIV expr
+	expr : expr . MOD expr
+	expr : expr . ADD expr
+	expr : expr . SUB expr
+	expr : expr . OR expr
+	expr : expr . GRT expr
+	expr : expr . LEE expr
+	expr : expr . AND expr
+	expr : expr . LET expr
+	expr : expr . GRE expr
+	expr : expr EQ expr .  (36)
+	expr : expr . EQ expr
+	expr : expr . NE expr
+	expr : expr . M_LEFT expr
+	expr : expr . M_RIGHT expr
+
+	ADD  shift 59
+	SUB  shift 60
+	MUL  shift 61
+	DIV  shift 62
+	MOD  shift 63
+	INC  shift 64
+	DEC  shift 65
+	M_LEFT  shift 66
+	M_RIGHT  shift 67
+	GRT  shift 69
+	LET  shift 70
+	GRE  shift 71
+	LEE  shift 72
+	.  reduce 36
+
+
+state 98
+	expr : expr . INC
+	expr : expr . DEC
+	expr : expr . MUL expr
+	expr : expr . DIV expr
+	expr : expr . MOD expr
+	expr : expr . ADD expr
+	expr : expr . SUB expr
+	expr : expr . OR expr
+	expr : expr GRT expr .  (37)
+	expr : expr . GRT expr
+	expr : expr . LEE expr
+	expr : expr . AND expr
+	expr : expr . LET expr
+	expr : expr . GRE expr
+	expr : expr . EQ expr
+	expr : expr . NE expr
+	expr : expr . M_LEFT expr
+	expr : expr . M_RIGHT expr
+
+	ADD  shift 59
+	SUB  shift 60
+	MUL  shift 61
+	DIV  shift 62
+	MOD  shift 63
+	INC  shift 64
+	DEC  shift 65
+	M_LEFT  shift 66
+	M_RIGHT  shift 67
+	.  reduce 37
+
+
+state 99
+	expr : expr . INC
+	expr : expr . DEC
+	expr : expr . MUL expr
+	expr : expr . DIV expr
+	expr : expr . MOD expr
+	expr : expr . ADD expr
+	expr : expr . SUB expr
+	expr : expr . OR expr
+	expr : expr . GRT expr
+	expr : expr . LEE expr
+	expr : expr . AND expr
+	expr : expr LET expr .  (38)
+	expr : expr . LET expr
+	expr : expr . GRE expr
+	expr : expr . EQ expr
+	expr : expr . NE expr
+	expr : expr . M_LEFT expr
+	expr : expr . M_RIGHT expr
+
+	ADD  shift 59
+	SUB  shift 60
+	MUL  shift 61
+	DIV  shift 62
+	MOD  shift 63
+	INC  shift 64
+	DEC  shift 65
+	M_LEFT  shift 66
+	M_RIGHT  shift 67
+	.  reduce 38
+
+
+state 100
+	expr : expr . INC
+	expr : expr . DEC
+	expr : expr . MUL expr
+	expr : expr . DIV expr
+	expr : expr . MOD expr
+	expr : expr . ADD expr
+	expr : expr . SUB expr
+	expr : expr . OR expr
+	expr : expr . GRT expr
+	expr : expr . LEE expr
+	expr : expr . AND expr
+	expr : expr . LET expr
+	expr : expr GRE expr .  (39)
+	expr : expr . GRE expr
+	expr : expr . EQ expr
+	expr : expr . NE expr
+	expr : expr . M_LEFT expr
+	expr : expr . M_RIGHT expr
+
+	ADD  shift 59
+	SUB  shift 60
+	MUL  shift 61
+	DIV  shift 62
+	MOD  shift 63
+	INC  shift 64
+	DEC  shift 65
+	M_LEFT  shift 66
+	M_RIGHT  shift 67
+	.  reduce 39
+
+
+state 101
+	expr : expr . INC
+	expr : expr . DEC
+	expr : expr . MUL expr
+	expr : expr . DIV expr
+	expr : expr . MOD expr
+	expr : expr . ADD expr
+	expr : expr . SUB expr
+	expr : expr . OR expr
+	expr : expr . GRT expr
+	expr : expr LEE expr .  (40)
+	expr : expr . LEE expr
+	expr : expr . AND expr
+	expr : expr . LET expr
+	expr : expr . GRE expr
+	expr : expr . EQ expr
+	expr : expr . NE expr
+	expr : expr . M_LEFT expr
+	expr : expr . M_RIGHT expr
+
+	ADD  shift 59
+	SUB  shift 60
+	MUL  shift 61
+	DIV  shift 62
+	MOD  shift 63
+	INC  shift 64
+	DEC  shift 65
+	M_LEFT  shift 66
+	M_RIGHT  shift 67
+	.  reduce 40
+
+
+state 102
+	expr : expr . INC
+	expr : expr . DEC
+	expr : expr . MUL expr
+	expr : expr . DIV expr
+	expr : expr . MOD expr
+	expr : expr . ADD expr
+	expr : expr . SUB expr
+	expr : expr . OR expr
+	expr : expr . GRT expr
+	expr : expr . LEE expr
+	expr : expr . AND expr
+	expr : expr . LET expr
+	expr : expr . GRE expr
+	expr : expr . EQ expr
+	expr : expr NE expr .  (41)
+	expr : expr . NE expr
+	expr : expr . M_LEFT expr
+	expr : expr . M_RIGHT expr
+
+	ADD  shift 59
+	SUB  shift 60
+	MUL  shift 61
+	DIV  shift 62
+	MOD  shift 63
+	INC  shift 64
+	DEC  shift 65
+	M_LEFT  shift 66
+	M_RIGHT  shift 67
+	GRT  shift 69
+	LET  shift 70
+	GRE  shift 71
+	LEE  shift 72
+	.  reduce 41
+
+
+state 103
+	expr : expr . INC
+	expr : expr . DEC
+	expr : expr . MUL expr
+	expr : expr . DIV expr
+	expr : expr . MOD expr
+	expr : expr . ADD expr
+	expr : expr . SUB expr
+	expr : expr . OR expr
+	expr : expr . GRT expr
+	expr : expr . LEE expr
+	expr : expr AND expr .  (42)
+	expr : expr . AND expr
+	expr : expr . LET expr
+	expr : expr . GRE expr
+	expr : expr . EQ expr
+	expr : expr . NE expr
+	expr : expr . M_LEFT expr
+	expr : expr . M_RIGHT expr
+
+	ADD  shift 59
+	SUB  shift 60
+	MUL  shift 61
+	DIV  shift 62
+	MOD  shift 63
+	INC  shift 64
+	DEC  shift 65
+	M_LEFT  shift 66
+	M_RIGHT  shift 67
+	EQ  shift 68
+	GRT  shift 69
+	LET  shift 70
+	GRE  shift 71
+	LEE  shift 72
+	NE  shift 73
+	.  reduce 42
+
+
+state 104
+	expr : expr . INC
+	expr : expr . DEC
+	expr : expr . MUL expr
+	expr : expr . DIV expr
+	expr : expr . MOD expr
+	expr : expr . ADD expr
+	expr : expr . SUB expr
+	expr : expr OR expr .  (43)
+	expr : expr . OR expr
+	expr : expr . GRT expr
+	expr : expr . LEE expr
+	expr : expr . AND expr
+	expr : expr . LET expr
+	expr : expr . GRE expr
+	expr : expr . EQ expr
+	expr : expr . NE expr
+	expr : expr . M_LEFT expr
+	expr : expr . M_RIGHT expr
+
+	ADD  shift 59
+	SUB  shift 60
+	MUL  shift 61
+	DIV  shift 62
+	MOD  shift 63
+	INC  shift 64
+	DEC  shift 65
+	M_LEFT  shift 66
+	M_RIGHT  shift 67
+	EQ  shift 68
+	GRT  shift 69
+	LET  shift 70
+	GRE  shift 71
+	LEE  shift 72
+	NE  shift 73
+	AND  shift 74
+	.  reduce 43
+
+
+state 105
 	idlist : id COMMA . idlist
 
 	ID  shift 8
 
-	idlist  goto 105
-	id  goto 53
-	assign_stmt  goto 54
+	idlist  goto 115
+	id  goto 78
+	assign_stmt  goto 79
 
 
-state 83
+state 106
 	idlist : assign_stmt COMMA . idlist
 
 	ID  shift 8
 
-	idlist  goto 106
-	id  goto 53
-	assign_stmt  goto 54
+	idlist  goto 116
+	id  goto 78
+	assign_stmt  goto 79
 
 
-state 84
-	expr : expr . SUB expr
-	expr : expr . MOD expr
+state 107
 	expr : expr . INC
 	expr : expr . DEC
-	expr : expr ADD expr .  (22)
-	expr : expr . ADD expr
 	expr : expr . MUL expr
 	expr : expr . DIV expr
-	expr : expr . OR expr
-	expr : expr . AND expr
-	expr : expr . M_LEFT expr
-	expr : expr . LEE expr
-	expr : expr . LET expr
-	expr : expr . NE expr
-	expr : expr . EQ expr
-	expr : expr . M_RIGHT expr
-	expr : expr . GRE expr
-	expr : expr . GRT expr
-
-	MUL  shift 60
-	DIV  shift 61
-	MOD  shift 62
-	INC  shift 63
-	DEC  shift 64
-	.  reduce 22
-
-
-state 85
-	expr : expr SUB expr .  (23)
-	expr : expr . SUB expr
+	assign_stmt : id ASSIGN expr .  (23)
 	expr : expr . MOD expr
-	expr : expr . INC
-	expr : expr . DEC
 	expr : expr . ADD expr
-	expr : expr . MUL expr
-	expr : expr . DIV expr
+	expr : expr . SUB expr
 	expr : expr . OR expr
-	expr : expr . AND expr
-	expr : expr . M_LEFT expr
-	expr : expr . LEE expr
-	expr : expr . LET expr
-	expr : expr . NE expr
-	expr : expr . EQ expr
-	expr : expr . M_RIGHT expr
-	expr : expr . GRE expr
 	expr : expr . GRT expr
+	expr : expr . LEE expr
+	expr : expr . AND expr
+	expr : expr . LET expr
+	expr : expr . GRE expr
+	expr : expr . EQ expr
+	expr : expr . NE expr
+	expr : expr . M_LEFT expr
+	expr : expr . M_RIGHT expr
 
-	MUL  shift 60
-	DIV  shift 61
-	MOD  shift 62
-	INC  shift 63
-	DEC  shift 64
+	ADD  shift 59
+	SUB  shift 60
+	MUL  shift 61
+	DIV  shift 62
+	MOD  shift 63
+	INC  shift 64
+	DEC  shift 65
+	M_LEFT  shift 66
+	M_RIGHT  shift 67
+	EQ  shift 68
+	GRT  shift 69
+	LET  shift 70
+	GRE  shift 71
+	LEE  shift 72
+	NE  shift 73
+	AND  shift 74
+	OR  shift 75
 	.  reduce 23
 
 
-state 86
-	expr : expr . SUB expr
-	expr : expr . MOD expr
-	expr : expr . INC
-	expr : expr . DEC
-	expr : expr . ADD expr
-	expr : expr MUL expr .  (24)
-	expr : expr . MUL expr
-	expr : expr . DIV expr
-	expr : expr . OR expr
-	expr : expr . AND expr
-	expr : expr . M_LEFT expr
-	expr : expr . LEE expr
-	expr : expr . LET expr
-	expr : expr . NE expr
-	expr : expr . EQ expr
-	expr : expr . M_RIGHT expr
-	expr : expr . GRE expr
-	expr : expr . GRT expr
-
-	INC  shift 63
-	DEC  shift 64
-	.  reduce 24
-
-
-state 87
-	expr : expr . SUB expr
-	expr : expr . MOD expr
-	expr : expr . INC
-	expr : expr . DEC
-	expr : expr . ADD expr
-	expr : expr . MUL expr
-	expr : expr DIV expr .  (25)
-	expr : expr . DIV expr
-	expr : expr . OR expr
-	expr : expr . AND expr
-	expr : expr . M_LEFT expr
-	expr : expr . LEE expr
-	expr : expr . LET expr
-	expr : expr . NE expr
-	expr : expr . EQ expr
-	expr : expr . M_RIGHT expr
-	expr : expr . GRE expr
-	expr : expr . GRT expr
-
-	INC  shift 63
-	DEC  shift 64
-	.  reduce 25
-
-
-state 88
-	expr : expr . SUB expr
-	expr : expr MOD expr .  (26)
-	expr : expr . MOD expr
-	expr : expr . INC
-	expr : expr . DEC
-	expr : expr . ADD expr
-	expr : expr . MUL expr
-	expr : expr . DIV expr
-	expr : expr . OR expr
-	expr : expr . AND expr
-	expr : expr . M_LEFT expr
-	expr : expr . LEE expr
-	expr : expr . LET expr
-	expr : expr . NE expr
-	expr : expr . EQ expr
-	expr : expr . M_RIGHT expr
-	expr : expr . GRE expr
-	expr : expr . GRT expr
-
-	INC  shift 63
-	DEC  shift 64
-	.  reduce 26
-
-
-state 89
-	expr : expr . SUB expr
-	expr : expr . MOD expr
-	expr : expr . INC
-	expr : expr . DEC
-	expr : expr . ADD expr
-	expr : expr . MUL expr
-	expr : expr . DIV expr
-	expr : expr . OR expr
-	expr : expr . AND expr
-	expr : expr M_LEFT expr .  (32)
-	expr : expr . M_LEFT expr
-	expr : expr . LEE expr
-	expr : expr . LET expr
-	expr : expr . NE expr
-	expr : expr . EQ expr
-	expr : expr . M_RIGHT expr
-	expr : expr . GRE expr
-	expr : expr . GRT expr
-
-	ADD  shift 58
-	SUB  shift 59
-	MUL  shift 60
-	DIV  shift 61
-	MOD  shift 62
-	INC  shift 63
-	DEC  shift 64
-	.  reduce 32
-
-
-state 90
-	expr : expr . SUB expr
-	expr : expr . MOD expr
-	expr : expr . INC
-	expr : expr . DEC
-	expr : expr . ADD expr
-	expr : expr . MUL expr
-	expr : expr . DIV expr
-	expr : expr . OR expr
-	expr : expr . AND expr
-	expr : expr . M_LEFT expr
-	expr : expr . LEE expr
-	expr : expr . LET expr
-	expr : expr . NE expr
-	expr : expr . EQ expr
-	expr : expr M_RIGHT expr .  (33)
-	expr : expr . M_RIGHT expr
-	expr : expr . GRE expr
-	expr : expr . GRT expr
-
-	ADD  shift 58
-	SUB  shift 59
-	MUL  shift 60
-	DIV  shift 61
-	MOD  shift 62
-	INC  shift 63
-	DEC  shift 64
-	.  reduce 33
-
-
-state 91
-	expr : expr . SUB expr
-	expr : expr . MOD expr
-	expr : expr . INC
-	expr : expr . DEC
-	expr : expr . ADD expr
-	expr : expr . MUL expr
-	expr : expr . DIV expr
-	expr : expr . OR expr
-	expr : expr . AND expr
-	expr : expr . M_LEFT expr
-	expr : expr . LEE expr
-	expr : expr . LET expr
-	expr : expr . NE expr
-	expr : expr EQ expr .  (34)
-	expr : expr . EQ expr
-	expr : expr . M_RIGHT expr
-	expr : expr . GRE expr
-	expr : expr . GRT expr
-
-	ADD  shift 58
-	SUB  shift 59
-	MUL  shift 60
-	DIV  shift 61
-	MOD  shift 62
-	INC  shift 63
-	DEC  shift 64
-	M_LEFT  shift 65
-	M_RIGHT  shift 66
-	GRT  shift 68
-	LET  shift 69
-	GRE  shift 70
-	LEE  shift 71
-	.  reduce 34
-
-
-state 92
-	expr : expr . SUB expr
-	expr : expr . MOD expr
-	expr : expr . INC
-	expr : expr . DEC
-	expr : expr . ADD expr
-	expr : expr . MUL expr
-	expr : expr . DIV expr
-	expr : expr . OR expr
-	expr : expr . AND expr
-	expr : expr . M_LEFT expr
-	expr : expr . LEE expr
-	expr : expr . LET expr
-	expr : expr . NE expr
-	expr : expr . EQ expr
-	expr : expr . M_RIGHT expr
-	expr : expr . GRE expr
-	expr : expr GRT expr .  (35)
-	expr : expr . GRT expr
-
-	ADD  shift 58
-	SUB  shift 59
-	MUL  shift 60
-	DIV  shift 61
-	MOD  shift 62
-	INC  shift 63
-	DEC  shift 64
-	M_LEFT  shift 65
-	M_RIGHT  shift 66
-	.  reduce 35
-
-
-state 93
-	expr : expr . SUB expr
-	expr : expr . MOD expr
-	expr : expr . INC
-	expr : expr . DEC
-	expr : expr . ADD expr
-	expr : expr . MUL expr
-	expr : expr . DIV expr
-	expr : expr . OR expr
-	expr : expr . AND expr
-	expr : expr . M_LEFT expr
-	expr : expr . LEE expr
-	expr : expr LET expr .  (36)
-	expr : expr . LET expr
-	expr : expr . NE expr
-	expr : expr . EQ expr
-	expr : expr . M_RIGHT expr
-	expr : expr . GRE expr
-	expr : expr . GRT expr
-
-	ADD  shift 58
-	SUB  shift 59
-	MUL  shift 60
-	DIV  shift 61
-	MOD  shift 62
-	INC  shift 63
-	DEC  shift 64
-	M_LEFT  shift 65
-	M_RIGHT  shift 66
-	.  reduce 36
-
-
-state 94
-	expr : expr . SUB expr
-	expr : expr . MOD expr
-	expr : expr . INC
-	expr : expr . DEC
-	expr : expr . ADD expr
-	expr : expr . MUL expr
-	expr : expr . DIV expr
-	expr : expr . OR expr
-	expr : expr . AND expr
-	expr : expr . M_LEFT expr
-	expr : expr . LEE expr
-	expr : expr . LET expr
-	expr : expr . NE expr
-	expr : expr . EQ expr
-	expr : expr . M_RIGHT expr
-	expr : expr GRE expr .  (37)
-	expr : expr . GRE expr
-	expr : expr . GRT expr
-
-	ADD  shift 58
-	SUB  shift 59
-	MUL  shift 60
-	DIV  shift 61
-	MOD  shift 62
-	INC  shift 63
-	DEC  shift 64
-	M_LEFT  shift 65
-	M_RIGHT  shift 66
-	.  reduce 37
-
-
-state 95
-	expr : expr . SUB expr
-	expr : expr . MOD expr
-	expr : expr . INC
-	expr : expr . DEC
-	expr : expr . ADD expr
-	expr : expr . MUL expr
-	expr : expr . DIV expr
-	expr : expr . OR expr
-	expr : expr . AND expr
-	expr : expr . M_LEFT expr
-	expr : expr LEE expr .  (38)
-	expr : expr . LEE expr
-	expr : expr . LET expr
-	expr : expr . NE expr
-	expr : expr . EQ expr
-	expr : expr . M_RIGHT expr
-	expr : expr . GRE expr
-	expr : expr . GRT expr
-
-	ADD  shift 58
-	SUB  shift 59
-	MUL  shift 60
-	DIV  shift 61
-	MOD  shift 62
-	INC  shift 63
-	DEC  shift 64
-	M_LEFT  shift 65
-	M_RIGHT  shift 66
-	.  reduce 38
-
-
-state 96
-	expr : expr . SUB expr
-	expr : expr . MOD expr
-	expr : expr . INC
-	expr : expr . DEC
-	expr : expr . ADD expr
-	expr : expr . MUL expr
-	expr : expr . DIV expr
-	expr : expr . OR expr
-	expr : expr . AND expr
-	expr : expr . M_LEFT expr
-	expr : expr . LEE expr
-	expr : expr . LET expr
-	expr : expr NE expr .  (39)
-	expr : expr . NE expr
-	expr : expr . EQ expr
-	expr : expr . M_RIGHT expr
-	expr : expr . GRE expr
-	expr : expr . GRT expr
-
-	ADD  shift 58
-	SUB  shift 59
-	MUL  shift 60
-	DIV  shift 61
-	MOD  shift 62
-	INC  shift 63
-	DEC  shift 64
-	M_LEFT  shift 65
-	M_RIGHT  shift 66
-	GRT  shift 68
-	LET  shift 69
-	GRE  shift 70
-	LEE  shift 71
-	.  reduce 39
-
-
-state 97
-	expr : expr . SUB expr
-	expr : expr . MOD expr
-	expr : expr . INC
-	expr : expr . DEC
-	expr : expr . ADD expr
-	expr : expr . MUL expr
-	expr : expr . DIV expr
-	expr : expr . OR expr
-	expr : expr AND expr .  (40)
-	expr : expr . AND expr
-	expr : expr . M_LEFT expr
-	expr : expr . LEE expr
-	expr : expr . LET expr
-	expr : expr . NE expr
-	expr : expr . EQ expr
-	expr : expr . M_RIGHT expr
-	expr : expr . GRE expr
-	expr : expr . GRT expr
-
-	ADD  shift 58
-	SUB  shift 59
-	MUL  shift 60
-	DIV  shift 61
-	MOD  shift 62
-	INC  shift 63
-	DEC  shift 64
-	M_LEFT  shift 65
-	M_RIGHT  shift 66
-	EQ  shift 67
-	GRT  shift 68
-	LET  shift 69
-	GRE  shift 70
-	LEE  shift 71
-	NE  shift 72
-	.  reduce 40
-
-
-state 98
-	expr : expr . SUB expr
-	expr : expr . MOD expr
-	expr : expr . INC
-	expr : expr . DEC
-	expr : expr . ADD expr
-	expr : expr . MUL expr
-	expr : expr . DIV expr
-	expr : expr OR expr .  (41)
-	expr : expr . OR expr
-	expr : expr . AND expr
-	expr : expr . M_LEFT expr
-	expr : expr . LEE expr
-	expr : expr . LET expr
-	expr : expr . NE expr
-	expr : expr . EQ expr
-	expr : expr . M_RIGHT expr
-	expr : expr . GRE expr
-	expr : expr . GRT expr
-
-	ADD  shift 58
-	SUB  shift 59
-	MUL  shift 60
-	DIV  shift 61
-	MOD  shift 62
-	INC  shift 63
-	DEC  shift 64
-	M_LEFT  shift 65
-	M_RIGHT  shift 66
-	EQ  shift 67
-	GRT  shift 68
-	LET  shift 69
-	GRE  shift 70
-	LEE  shift 71
-	NE  shift 72
-	AND  shift 73
-	.  reduce 41
-
-
-state 99
-	expr : expr . SUB expr
-	expr : expr . MOD expr
-	expr : expr . INC
-	expr : expr . DEC
-	assign_stmt : id ASSIGN expr .  (21)
-	expr : expr . ADD expr
-	expr : expr . MUL expr
-	expr : expr . DIV expr
-	expr : expr . OR expr
-	expr : expr . AND expr
-	expr : expr . M_LEFT expr
-	expr : expr . LEE expr
-	expr : expr . LET expr
-	expr : expr . NE expr
-	expr : expr . EQ expr
-	expr : expr . M_RIGHT expr
-	expr : expr . GRE expr
-	expr : expr . GRT expr
-
-	ADD  shift 58
-	SUB  shift 59
-	MUL  shift 60
-	DIV  shift 61
-	MOD  shift 62
-	INC  shift 63
-	DEC  shift 64
-	M_LEFT  shift 65
-	M_RIGHT  shift 66
-	EQ  shift 67
-	GRT  shift 68
-	LET  shift 69
-	GRE  shift 70
-	LEE  shift 71
-	NE  shift 72
-	AND  shift 73
-	OR  shift 74
-	.  reduce 21
-
-
-state 100
+state 108
 	if_stmt : IF LPAREN expr RPAREN . stmt
 	if_stmt : IF LPAREN expr RPAREN . stmt ELSE stmt
 
@@ -2137,36 +2303,40 @@ state 100
 	INC  shift 10
 	DEC  shift 11
 	B_AND  shift 12
-	B_IOR  shift 13
-	B_EOR  shift 14
-	B_OPP  shift 15
+	B_OR  shift 13
+	B_XOR  shift 14
+	B_NOT  shift 15
 	INT  shift 16
 	CHAR  shift 17
 	IF  shift 18
 	WHILE  shift 19
 	FOR  shift 20
-	LETTER  shift 21
-	NOT  shift 22
+	IN  shift 21
+	OUT  shift 22
+	LETTER  shift 23
+	NOT  shift 24
 	LBRACE  shift 5
-	LPAREN  shift 24
-	SEMICOLON  shift 25
+	LPAREN  shift 26
+	SEMICOLON  shift 27
 
-	type  goto 26
-	while_stmt  goto 27
-	braced_stmt  goto 28
-	stmt  goto 107
-	if_stmt  goto 30
-	for_stmt  goto 31
-	decl_stmt  goto 33
-	expr  goto 34
-	id  goto 35
-	assign_stmt  goto 36
-	factor  goto 37
-	num  goto 38
+	decl_stmt  goto 28
+	expr  goto 29
+	type  goto 30
+	braced_stmt  goto 31
+	in_stmt  goto 32
+	while_stmt  goto 34
+	out_stmt  goto 35
+	stmt  goto 117
+	for_stmt  goto 37
+	if_stmt  goto 38
 	letter  goto 39
+	id  goto 40
+	assign_stmt  goto 41
+	factor  goto 42
+	num  goto 43
 
 
-state 101
+state 109
 	while_stmt : WHILE LPAREN expr RPAREN . stmt
 
 	NUMBER  shift 7
@@ -2175,36 +2345,40 @@ state 101
 	INC  shift 10
 	DEC  shift 11
 	B_AND  shift 12
-	B_IOR  shift 13
-	B_EOR  shift 14
-	B_OPP  shift 15
+	B_OR  shift 13
+	B_XOR  shift 14
+	B_NOT  shift 15
 	INT  shift 16
 	CHAR  shift 17
 	IF  shift 18
 	WHILE  shift 19
 	FOR  shift 20
-	LETTER  shift 21
-	NOT  shift 22
+	IN  shift 21
+	OUT  shift 22
+	LETTER  shift 23
+	NOT  shift 24
 	LBRACE  shift 5
-	LPAREN  shift 24
-	SEMICOLON  shift 25
+	LPAREN  shift 26
+	SEMICOLON  shift 27
 
-	type  goto 26
-	while_stmt  goto 27
-	braced_stmt  goto 28
-	stmt  goto 108
-	if_stmt  goto 30
-	for_stmt  goto 31
-	decl_stmt  goto 33
-	expr  goto 34
-	id  goto 35
-	assign_stmt  goto 36
-	factor  goto 37
-	num  goto 38
+	decl_stmt  goto 28
+	expr  goto 29
+	type  goto 30
+	braced_stmt  goto 31
+	in_stmt  goto 32
+	while_stmt  goto 34
+	out_stmt  goto 35
+	stmt  goto 118
+	for_stmt  goto 37
+	if_stmt  goto 38
 	letter  goto 39
+	id  goto 40
+	assign_stmt  goto 41
+	factor  goto 42
+	num  goto 43
 
 
-state 102
+state 110
 	for_stmt : FOR LPAREN SEMICOLON SEMICOLON . expr RPAREN stmt
 	for_stmt : FOR LPAREN SEMICOLON SEMICOLON . RPAREN stmt
 
@@ -2214,68 +2388,68 @@ state 102
 	INC  shift 10
 	DEC  shift 11
 	B_AND  shift 12
-	B_IOR  shift 13
-	B_EOR  shift 14
-	B_OPP  shift 15
-	LETTER  shift 21
-	NOT  shift 22
-	LPAREN  shift 24
-	RPAREN  shift 109
+	B_OR  shift 13
+	B_XOR  shift 14
+	B_NOT  shift 15
+	LETTER  shift 23
+	NOT  shift 24
+	LPAREN  shift 26
+	RPAREN  shift 119
 
-	expr  goto 110
-	id  goto 35
-	assign_stmt  goto 36
-	factor  goto 37
-	num  goto 38
+	expr  goto 120
 	letter  goto 39
+	id  goto 40
+	assign_stmt  goto 41
+	factor  goto 42
+	num  goto 43
 
 
-state 103
-	expr : expr . SUB expr
-	expr : expr . MOD expr
+state 111
 	expr : expr . INC
 	expr : expr . DEC
-	expr : expr . ADD expr
 	expr : expr . MUL expr
 	expr : expr . DIV expr
+	expr : expr . MOD expr
+	expr : expr . ADD expr
+	expr : expr . SUB expr
 	expr : expr . OR expr
-	expr : expr . AND expr
-	expr : expr . M_LEFT expr
-	expr : expr . LEE expr
-	expr : expr . LET expr
-	expr : expr . NE expr
-	expr : expr . EQ expr
-	expr : expr . M_RIGHT expr
-	expr : expr . GRE expr
-	expr : expr . GRT expr
-	for_stmt : FOR LPAREN SEMICOLON expr . SEMICOLON RPAREN stmt
 	for_stmt : FOR LPAREN SEMICOLON expr . SEMICOLON expr RPAREN stmt
+	for_stmt : FOR LPAREN SEMICOLON expr . SEMICOLON RPAREN stmt
+	expr : expr . GRT expr
+	expr : expr . LEE expr
+	expr : expr . AND expr
+	expr : expr . LET expr
+	expr : expr . GRE expr
+	expr : expr . EQ expr
+	expr : expr . NE expr
+	expr : expr . M_LEFT expr
+	expr : expr . M_RIGHT expr
 
-	ADD  shift 58
-	SUB  shift 59
-	MUL  shift 60
-	DIV  shift 61
-	MOD  shift 62
-	INC  shift 63
-	DEC  shift 64
-	M_LEFT  shift 65
-	M_RIGHT  shift 66
-	EQ  shift 67
-	GRT  shift 68
-	LET  shift 69
-	GRE  shift 70
-	LEE  shift 71
-	NE  shift 72
-	AND  shift 73
-	OR  shift 74
-	SEMICOLON  shift 111
+	ADD  shift 59
+	SUB  shift 60
+	MUL  shift 61
+	DIV  shift 62
+	MOD  shift 63
+	INC  shift 64
+	DEC  shift 65
+	M_LEFT  shift 66
+	M_RIGHT  shift 67
+	EQ  shift 68
+	GRT  shift 69
+	LET  shift 70
+	GRE  shift 71
+	LEE  shift 72
+	NE  shift 73
+	AND  shift 74
+	OR  shift 75
+	SEMICOLON  shift 121
 
 
-state 104
-	for_stmt : FOR LPAREN expr SEMICOLON . expr SEMICOLON RPAREN stmt
+state 112
 	for_stmt : FOR LPAREN expr SEMICOLON . expr SEMICOLON expr RPAREN stmt
 	for_stmt : FOR LPAREN expr SEMICOLON . SEMICOLON expr RPAREN stmt
 	for_stmt : FOR LPAREN expr SEMICOLON . SEMICOLON RPAREN stmt
+	for_stmt : FOR LPAREN expr SEMICOLON . expr SEMICOLON RPAREN stmt
 
 	NUMBER  shift 7
 	ID  shift 8
@@ -2283,50 +2457,62 @@ state 104
 	INC  shift 10
 	DEC  shift 11
 	B_AND  shift 12
-	B_IOR  shift 13
-	B_EOR  shift 14
-	B_OPP  shift 15
-	LETTER  shift 21
-	NOT  shift 22
-	LPAREN  shift 24
-	SEMICOLON  shift 112
+	B_OR  shift 13
+	B_XOR  shift 14
+	B_NOT  shift 15
+	LETTER  shift 23
+	NOT  shift 24
+	LPAREN  shift 26
+	SEMICOLON  shift 122
 
-	expr  goto 113
-	id  goto 35
-	assign_stmt  goto 36
-	factor  goto 37
-	num  goto 38
+	expr  goto 123
 	letter  goto 39
+	id  goto 40
+	assign_stmt  goto 41
+	factor  goto 42
+	num  goto 43
 
 
-state 105
-	idlist : id COMMA idlist .  (16)
+state 113
+	in_stmt : IN LPAREN expr RPAREN . SEMICOLON
 
-	.  reduce 16
-
-
-state 106
-	idlist : assign_stmt COMMA idlist .  (17)
-
-	.  reduce 17
+	SEMICOLON  shift 124
 
 
-107: shift-reduce conflict (shift 114, reduce 56) on ELSE
-state 107
-	if_stmt : IF LPAREN expr RPAREN stmt .  (56)
+state 114
+	out_stmt : OUT LPAREN expr RPAREN . SEMICOLON
+
+	SEMICOLON  shift 125
+
+
+state 115
+	idlist : id COMMA idlist .  (18)
+
+	.  reduce 18
+
+
+state 116
+	idlist : assign_stmt COMMA idlist .  (19)
+
+	.  reduce 19
+
+
+117: shift-reduce conflict (shift 126, reduce 60) on ELSE
+state 117
+	if_stmt : IF LPAREN expr RPAREN stmt .  (60)
 	if_stmt : IF LPAREN expr RPAREN stmt . ELSE stmt
 
-	ELSE  shift 114
-	.  reduce 56
+	ELSE  shift 126
+	.  reduce 60
 
 
-state 108
-	while_stmt : WHILE LPAREN expr RPAREN stmt .  (55)
+state 118
+	while_stmt : WHILE LPAREN expr RPAREN stmt .  (57)
 
-	.  reduce 55
+	.  reduce 57
 
 
-state 109
+state 119
 	for_stmt : FOR LPAREN SEMICOLON SEMICOLON RPAREN . stmt
 
 	NUMBER  shift 7
@@ -2335,78 +2521,82 @@ state 109
 	INC  shift 10
 	DEC  shift 11
 	B_AND  shift 12
-	B_IOR  shift 13
-	B_EOR  shift 14
-	B_OPP  shift 15
+	B_OR  shift 13
+	B_XOR  shift 14
+	B_NOT  shift 15
 	INT  shift 16
 	CHAR  shift 17
 	IF  shift 18
 	WHILE  shift 19
 	FOR  shift 20
-	LETTER  shift 21
-	NOT  shift 22
+	IN  shift 21
+	OUT  shift 22
+	LETTER  shift 23
+	NOT  shift 24
 	LBRACE  shift 5
-	LPAREN  shift 24
-	SEMICOLON  shift 25
+	LPAREN  shift 26
+	SEMICOLON  shift 27
 
-	type  goto 26
-	while_stmt  goto 27
-	braced_stmt  goto 28
-	stmt  goto 115
-	if_stmt  goto 30
-	for_stmt  goto 31
-	decl_stmt  goto 33
-	expr  goto 34
-	id  goto 35
-	assign_stmt  goto 36
-	factor  goto 37
-	num  goto 38
+	decl_stmt  goto 28
+	expr  goto 29
+	type  goto 30
+	braced_stmt  goto 31
+	in_stmt  goto 32
+	while_stmt  goto 34
+	out_stmt  goto 35
+	stmt  goto 127
+	for_stmt  goto 37
+	if_stmt  goto 38
 	letter  goto 39
+	id  goto 40
+	assign_stmt  goto 41
+	factor  goto 42
+	num  goto 43
 
 
-state 110
-	expr : expr . SUB expr
-	expr : expr . MOD expr
+state 120
 	expr : expr . INC
 	expr : expr . DEC
-	expr : expr . ADD expr
 	expr : expr . MUL expr
 	expr : expr . DIV expr
+	expr : expr . MOD expr
+	expr : expr . ADD expr
+	expr : expr . SUB expr
 	expr : expr . OR expr
-	expr : expr . AND expr
-	expr : expr . M_LEFT expr
-	expr : expr . LEE expr
-	expr : expr . LET expr
-	expr : expr . NE expr
-	expr : expr . EQ expr
-	expr : expr . M_RIGHT expr
-	expr : expr . GRE expr
 	expr : expr . GRT expr
+	expr : expr . LEE expr
+	expr : expr . AND expr
+	expr : expr . LET expr
+	expr : expr . GRE expr
+	expr : expr . EQ expr
+	expr : expr . NE expr
+	expr : expr . M_LEFT expr
+	expr : expr . M_RIGHT expr
 	for_stmt : FOR LPAREN SEMICOLON SEMICOLON expr . RPAREN stmt
 
-	ADD  shift 58
-	SUB  shift 59
-	MUL  shift 60
-	DIV  shift 61
-	MOD  shift 62
-	INC  shift 63
-	DEC  shift 64
-	M_LEFT  shift 65
-	M_RIGHT  shift 66
-	EQ  shift 67
-	GRT  shift 68
-	LET  shift 69
-	GRE  shift 70
-	LEE  shift 71
-	NE  shift 72
-	AND  shift 73
-	OR  shift 74
-	RPAREN  shift 116
+	ADD  shift 59
+	SUB  shift 60
+	MUL  shift 61
+	DIV  shift 62
+	MOD  shift 63
+	INC  shift 64
+	DEC  shift 65
+	M_LEFT  shift 66
+	M_RIGHT  shift 67
+	EQ  shift 68
+	GRT  shift 69
+	LET  shift 70
+	GRE  shift 71
+	LEE  shift 72
+	NE  shift 73
+	AND  shift 74
+	OR  shift 75
+	RPAREN  shift 128
 
 
-state 111
-	for_stmt : FOR LPAREN SEMICOLON expr SEMICOLON . RPAREN stmt
+state 121
 	for_stmt : FOR LPAREN SEMICOLON expr SEMICOLON . expr RPAREN stmt
+	for_stmt : FOR LPAREN SEMICOLON expr SEMICOLON . RPAREN stmt
 
 	NUMBER  shift 7
 	ID  shift 8
@@ -2414,23 +2604,23 @@ state 111
 	INC  shift 10
 	DEC  shift 11
 	B_AND  shift 12
-	B_IOR  shift 13
-	B_EOR  shift 14
-	B_OPP  shift 15
-	LETTER  shift 21
-	NOT  shift 22
-	LPAREN  shift 24
-	RPAREN  shift 117
+	B_OR  shift 13
+	B_XOR  shift 14
+	B_NOT  shift 15
+	LETTER  shift 23
+	NOT  shift 24
+	LPAREN  shift 26
+	RPAREN  shift 129
 
-	expr  goto 118
-	id  goto 35
-	assign_stmt  goto 36
-	factor  goto 37
-	num  goto 38
+	expr  goto 130
 	letter  goto 39
+	id  goto 40
+	assign_stmt  goto 41
+	factor  goto 42
+	num  goto 43
 
 
-state 112
+state 122
 	for_stmt : FOR LPAREN expr SEMICOLON SEMICOLON . expr RPAREN stmt
 	for_stmt : FOR LPAREN expr SEMICOLON SEMICOLON . RPAREN stmt
 
@@ -2440,64 +2630,76 @@ state 112
 	INC  shift 10
 	DEC  shift 11
 	B_AND  shift 12
-	B_IOR  shift 13
-	B_EOR  shift 14
-	B_OPP  shift 15
-	LETTER  shift 21
-	NOT  shift 22
-	LPAREN  shift 24
-	RPAREN  shift 119
+	B_OR  shift 13
+	B_XOR  shift 14
+	B_NOT  shift 15
+	LETTER  shift 23
+	NOT  shift 24
+	LPAREN  shift 26
+	RPAREN  shift 131
 
-	expr  goto 120
-	id  goto 35
-	assign_stmt  goto 36
-	factor  goto 37
-	num  goto 38
+	expr  goto 132
 	letter  goto 39
+	id  goto 40
+	assign_stmt  goto 41
+	factor  goto 42
+	num  goto 43
 
 
-state 113
-	expr : expr . SUB expr
-	expr : expr . MOD expr
+state 123
 	expr : expr . INC
 	expr : expr . DEC
-	expr : expr . ADD expr
 	expr : expr . MUL expr
 	expr : expr . DIV expr
+	expr : expr . MOD expr
+	expr : expr . ADD expr
+	expr : expr . SUB expr
 	expr : expr . OR expr
-	expr : expr . AND expr
-	expr : expr . M_LEFT expr
-	expr : expr . LEE expr
-	expr : expr . LET expr
-	expr : expr . NE expr
-	expr : expr . EQ expr
-	for_stmt : FOR LPAREN expr SEMICOLON expr . SEMICOLON RPAREN stmt
-	expr : expr . M_RIGHT expr
-	expr : expr . GRE expr
-	expr : expr . GRT expr
 	for_stmt : FOR LPAREN expr SEMICOLON expr . SEMICOLON expr RPAREN stmt
+	for_stmt : FOR LPAREN expr SEMICOLON expr . SEMICOLON RPAREN stmt
+	expr : expr . GRT expr
+	expr : expr . LEE expr
+	expr : expr . AND expr
+	expr : expr . LET expr
+	expr : expr . GRE expr
+	expr : expr . EQ expr
+	expr : expr . NE expr
+	expr : expr . M_LEFT expr
+	expr : expr . M_RIGHT expr
 
-	ADD  shift 58
-	SUB  shift 59
-	MUL  shift 60
-	DIV  shift 61
-	MOD  shift 62
-	INC  shift 63
-	DEC  shift 64
-	M_LEFT  shift 65
-	M_RIGHT  shift 66
-	EQ  shift 67
-	GRT  shift 68
-	LET  shift 69
-	GRE  shift 70
-	LEE  shift 71
-	NE  shift 72
-	AND  shift 73
-	OR  shift 74
-	SEMICOLON  shift 121
+	ADD  shift 59
+	SUB  shift 60
+	MUL  shift 61
+	DIV  shift 62
+	MOD  shift 63
+	INC  shift 64
+	DEC  shift 65
+	M_LEFT  shift 66
+	M_RIGHT  shift 67
+	EQ  shift 68
+	GRT  shift 69
+	LET  shift 70
+	GRE  shift 71
+	LEE  shift 72
+	NE  shift 73
+	AND  shift 74
+	OR  shift 75
+	SEMICOLON  shift 133
 
 
-state 114
+state 124
+	in_stmt : IN LPAREN expr RPAREN SEMICOLON .  (58)
+
+	.  reduce 58
+
+
+state 125
+	out_stmt : OUT LPAREN expr RPAREN SEMICOLON .  (59)
+
+	.  reduce 59
+
+
+state 126
 	if_stmt : IF LPAREN expr RPAREN stmt ELSE . stmt
 
 	NUMBER  shift 7
@@ -2506,42 +2708,46 @@ state 114
 	INC  shift 10
 	DEC  shift 11
 	B_AND  shift 12
-	B_IOR  shift 13
-	B_EOR  shift 14
-	B_OPP  shift 15
+	B_OR  shift 13
+	B_XOR  shift 14
+	B_NOT  shift 15
 	INT  shift 16
 	CHAR  shift 17
 	IF  shift 18
 	WHILE  shift 19
 	FOR  shift 20
-	LETTER  shift 21
-	NOT  shift 22
+	IN  shift 21
+	OUT  shift 22
+	LETTER  shift 23
+	NOT  shift 24
 	LBRACE  shift 5
-	LPAREN  shift 24
-	SEMICOLON  shift 25
+	LPAREN  shift 26
+	SEMICOLON  shift 27
 
-	type  goto 26
-	while_stmt  goto 27
-	braced_stmt  goto 28
-	stmt  goto 122
-	if_stmt  goto 30
-	for_stmt  goto 31
-	decl_stmt  goto 33
-	expr  goto 34
-	id  goto 35
-	assign_stmt  goto 36
-	factor  goto 37
-	num  goto 38
+	decl_stmt  goto 28
+	expr  goto 29
+	type  goto 30
+	braced_stmt  goto 31
+	in_stmt  goto 32
+	while_stmt  goto 34
+	out_stmt  goto 35
+	stmt  goto 134
+	for_stmt  goto 37
+	if_stmt  goto 38
 	letter  goto 39
+	id  goto 40
+	assign_stmt  goto 41
+	factor  goto 42
+	num  goto 43
 
 
-state 115
-	for_stmt : FOR LPAREN SEMICOLON SEMICOLON RPAREN stmt .  (65)
+state 127
+	for_stmt : FOR LPAREN SEMICOLON SEMICOLON RPAREN stmt .  (69)
 
-	.  reduce 65
+	.  reduce 69
 
 
-state 116
+state 128
 	for_stmt : FOR LPAREN SEMICOLON SEMICOLON expr RPAREN . stmt
 
 	NUMBER  shift 7
@@ -2550,36 +2756,40 @@ state 116
 	INC  shift 10
 	DEC  shift 11
 	B_AND  shift 12
-	B_IOR  shift 13
-	B_EOR  shift 14
-	B_OPP  shift 15
+	B_OR  shift 13
+	B_XOR  shift 14
+	B_NOT  shift 15
 	INT  shift 16
 	CHAR  shift 17
 	IF  shift 18
 	WHILE  shift 19
 	FOR  shift 20
-	LETTER  shift 21
-	NOT  shift 22
+	IN  shift 21
+	OUT  shift 22
+	LETTER  shift 23
+	NOT  shift 24
 	LBRACE  shift 5
-	LPAREN  shift 24
-	SEMICOLON  shift 25
+	LPAREN  shift 26
+	SEMICOLON  shift 27
 
-	type  goto 26
-	while_stmt  goto 27
-	braced_stmt  goto 28
-	stmt  goto 123
-	if_stmt  goto 30
-	for_stmt  goto 31
-	decl_stmt  goto 33
-	expr  goto 34
-	id  goto 35
-	assign_stmt  goto 36
-	factor  goto 37
-	num  goto 38
+	decl_stmt  goto 28
+	expr  goto 29
+	type  goto 30
+	braced_stmt  goto 31
+	in_stmt  goto 32
+	while_stmt  goto 34
+	out_stmt  goto 35
+	stmt  goto 135
+	for_stmt  goto 37
+	if_stmt  goto 38
 	letter  goto 39
+	id  goto 40
+	assign_stmt  goto 41
+	factor  goto 42
+	num  goto 43
 
 
-state 117
+state 129
 	for_stmt : FOR LPAREN SEMICOLON expr SEMICOLON RPAREN . stmt
 
 	NUMBER  shift 7
@@ -2588,76 +2798,80 @@ state 117
 	INC  shift 10
 	DEC  shift 11
 	B_AND  shift 12
-	B_IOR  shift 13
-	B_EOR  shift 14
-	B_OPP  shift 15
+	B_OR  shift 13
+	B_XOR  shift 14
+	B_NOT  shift 15
 	INT  shift 16
 	CHAR  shift 17
 	IF  shift 18
 	WHILE  shift 19
 	FOR  shift 20
-	LETTER  shift 21
-	NOT  shift 22
+	IN  shift 21
+	OUT  shift 22
+	LETTER  shift 23
+	NOT  shift 24
 	LBRACE  shift 5
-	LPAREN  shift 24
-	SEMICOLON  shift 25
+	LPAREN  shift 26
+	SEMICOLON  shift 27
 
-	type  goto 26
-	while_stmt  goto 27
-	braced_stmt  goto 28
-	stmt  goto 124
-	if_stmt  goto 30
-	for_stmt  goto 31
-	decl_stmt  goto 33
-	expr  goto 34
-	id  goto 35
-	assign_stmt  goto 36
-	factor  goto 37
-	num  goto 38
+	decl_stmt  goto 28
+	expr  goto 29
+	type  goto 30
+	braced_stmt  goto 31
+	in_stmt  goto 32
+	while_stmt  goto 34
+	out_stmt  goto 35
+	stmt  goto 136
+	for_stmt  goto 37
+	if_stmt  goto 38
 	letter  goto 39
+	id  goto 40
+	assign_stmt  goto 41
+	factor  goto 42
+	num  goto 43
 
 
-state 118
-	expr : expr . SUB expr
-	expr : expr . MOD expr
+state 130
 	expr : expr . INC
 	expr : expr . DEC
-	expr : expr . ADD expr
 	expr : expr . MUL expr
 	expr : expr . DIV expr
+	expr : expr . MOD expr
+	expr : expr . ADD expr
+	expr : expr . SUB expr
 	expr : expr . OR expr
-	expr : expr . AND expr
-	expr : expr . M_LEFT expr
-	expr : expr . LEE expr
-	expr : expr . LET expr
-	expr : expr . NE expr
-	expr : expr . EQ expr
-	expr : expr . M_RIGHT expr
-	expr : expr . GRE expr
-	expr : expr . GRT expr
 	for_stmt : FOR LPAREN SEMICOLON expr SEMICOLON expr . RPAREN stmt
+	expr : expr . GRT expr
+	expr : expr . LEE expr
+	expr : expr . AND expr
+	expr : expr . LET expr
+	expr : expr . GRE expr
+	expr : expr . EQ expr
+	expr : expr . NE expr
+	expr : expr . M_LEFT expr
+	expr : expr . M_RIGHT expr
 
-	ADD  shift 58
-	SUB  shift 59
-	MUL  shift 60
-	DIV  shift 61
-	MOD  shift 62
-	INC  shift 63
-	DEC  shift 64
-	M_LEFT  shift 65
-	M_RIGHT  shift 66
-	EQ  shift 67
-	GRT  shift 68
-	LET  shift 69
-	GRE  shift 70
-	LEE  shift 71
-	NE  shift 72
-	AND  shift 73
-	OR  shift 74
-	RPAREN  shift 125
+	ADD  shift 59
+	SUB  shift 60
+	MUL  shift 61
+	DIV  shift 62
+	MOD  shift 63
+	INC  shift 64
+	DEC  shift 65
+	M_LEFT  shift 66
+	M_RIGHT  shift 67
+	EQ  shift 68
+	GRT  shift 69
+	LET  shift 70
+	GRE  shift 71
+	LEE  shift 72
+	NE  shift 73
+	AND  shift 74
+	OR  shift 75
+	RPAREN  shift 137
 
 
-state 119
+state 131
 	for_stmt : FOR LPAREN expr SEMICOLON SEMICOLON RPAREN . stmt
 
 	NUMBER  shift 7
@@ -2666,78 +2880,82 @@ state 119
 	INC  shift 10
 	DEC  shift 11
 	B_AND  shift 12
-	B_IOR  shift 13
-	B_EOR  shift 14
-	B_OPP  shift 15
+	B_OR  shift 13
+	B_XOR  shift 14
+	B_NOT  shift 15
 	INT  shift 16
 	CHAR  shift 17
 	IF  shift 18
 	WHILE  shift 19
 	FOR  shift 20
-	LETTER  shift 21
-	NOT  shift 22
+	IN  shift 21
+	OUT  shift 22
+	LETTER  shift 23
+	NOT  shift 24
 	LBRACE  shift 5
-	LPAREN  shift 24
-	SEMICOLON  shift 25
+	LPAREN  shift 26
+	SEMICOLON  shift 27
 
-	type  goto 26
-	while_stmt  goto 27
-	braced_stmt  goto 28
-	stmt  goto 126
-	if_stmt  goto 30
-	for_stmt  goto 31
-	decl_stmt  goto 33
-	expr  goto 34
-	id  goto 35
-	assign_stmt  goto 36
-	factor  goto 37
-	num  goto 38
+	decl_stmt  goto 28
+	expr  goto 29
+	type  goto 30
+	braced_stmt  goto 31
+	in_stmt  goto 32
+	while_stmt  goto 34
+	out_stmt  goto 35
+	stmt  goto 138
+	for_stmt  goto 37
+	if_stmt  goto 38
 	letter  goto 39
+	id  goto 40
+	assign_stmt  goto 41
+	factor  goto 42
+	num  goto 43
 
 
-state 120
-	expr : expr . SUB expr
-	expr : expr . MOD expr
+state 132
 	expr : expr . INC
 	expr : expr . DEC
-	expr : expr . ADD expr
 	expr : expr . MUL expr
 	expr : expr . DIV expr
+	expr : expr . MOD expr
+	expr : expr . ADD expr
+	expr : expr . SUB expr
 	expr : expr . OR expr
-	expr : expr . AND expr
-	expr : expr . M_LEFT expr
-	expr : expr . LEE expr
-	expr : expr . LET expr
-	expr : expr . NE expr
-	expr : expr . EQ expr
-	expr : expr . M_RIGHT expr
-	expr : expr . GRE expr
-	expr : expr . GRT expr
 	for_stmt : FOR LPAREN expr SEMICOLON SEMICOLON expr . RPAREN stmt
+	expr : expr . GRT expr
+	expr : expr . LEE expr
+	expr : expr . AND expr
+	expr : expr . LET expr
+	expr : expr . GRE expr
+	expr : expr . EQ expr
+	expr : expr . NE expr
+	expr : expr . M_LEFT expr
+	expr : expr . M_RIGHT expr
 
-	ADD  shift 58
-	SUB  shift 59
-	MUL  shift 60
-	DIV  shift 61
-	MOD  shift 62
-	INC  shift 63
-	DEC  shift 64
-	M_LEFT  shift 65
-	M_RIGHT  shift 66
-	EQ  shift 67
-	GRT  shift 68
-	LET  shift 69
-	GRE  shift 70
-	LEE  shift 71
-	NE  shift 72
-	AND  shift 73
-	OR  shift 74
-	RPAREN  shift 127
+	ADD  shift 59
+	SUB  shift 60
+	MUL  shift 61
+	DIV  shift 62
+	MOD  shift 63
+	INC  shift 64
+	DEC  shift 65
+	M_LEFT  shift 66
+	M_RIGHT  shift 67
+	EQ  shift 68
+	GRT  shift 69
+	LET  shift 70
+	GRE  shift 71
+	LEE  shift 72
+	NE  shift 73
+	AND  shift 74
+	OR  shift 75
+	RPAREN  shift 139
 
 
-state 121
-	for_stmt : FOR LPAREN expr SEMICOLON expr SEMICOLON . RPAREN stmt
+state 133
 	for_stmt : FOR LPAREN expr SEMICOLON expr SEMICOLON . expr RPAREN stmt
+	for_stmt : FOR LPAREN expr SEMICOLON expr SEMICOLON . RPAREN stmt
 
 	NUMBER  shift 7
 	ID  shift 8
@@ -2745,41 +2963,41 @@ state 121
 	INC  shift 10
 	DEC  shift 11
 	B_AND  shift 12
-	B_IOR  shift 13
-	B_EOR  shift 14
-	B_OPP  shift 15
-	LETTER  shift 21
-	NOT  shift 22
-	LPAREN  shift 24
-	RPAREN  shift 128
+	B_OR  shift 13
+	B_XOR  shift 14
+	B_NOT  shift 15
+	LETTER  shift 23
+	NOT  shift 24
+	LPAREN  shift 26
+	RPAREN  shift 140
 
-	expr  goto 129
-	id  goto 35
-	assign_stmt  goto 36
-	factor  goto 37
-	num  goto 38
+	expr  goto 141
 	letter  goto 39
+	id  goto 40
+	assign_stmt  goto 41
+	factor  goto 42
+	num  goto 43
 
 
-state 122
-	if_stmt : IF LPAREN expr RPAREN stmt ELSE stmt .  (57)
+state 134
+	if_stmt : IF LPAREN expr RPAREN stmt ELSE stmt .  (61)
 
-	.  reduce 57
-
-
-state 123
-	for_stmt : FOR LPAREN SEMICOLON SEMICOLON expr RPAREN stmt .  (64)
-
-	.  reduce 64
+	.  reduce 61
 
 
-state 124
-	for_stmt : FOR LPAREN SEMICOLON expr SEMICOLON RPAREN stmt .  (63)
+state 135
+	for_stmt : FOR LPAREN SEMICOLON SEMICOLON expr RPAREN stmt .  (68)
 
-	.  reduce 63
+	.  reduce 68
 
 
-state 125
+state 136
+	for_stmt : FOR LPAREN SEMICOLON expr SEMICOLON RPAREN stmt .  (67)
+
+	.  reduce 67
+
+
+state 137
 	for_stmt : FOR LPAREN SEMICOLON expr SEMICOLON expr RPAREN . stmt
 
 	NUMBER  shift 7
@@ -2788,42 +3006,46 @@ state 125
 	INC  shift 10
 	DEC  shift 11
 	B_AND  shift 12
-	B_IOR  shift 13
-	B_EOR  shift 14
-	B_OPP  shift 15
+	B_OR  shift 13
+	B_XOR  shift 14
+	B_NOT  shift 15
 	INT  shift 16
 	CHAR  shift 17
 	IF  shift 18
 	WHILE  shift 19
 	FOR  shift 20
-	LETTER  shift 21
-	NOT  shift 22
+	IN  shift 21
+	OUT  shift 22
+	LETTER  shift 23
+	NOT  shift 24
 	LBRACE  shift 5
-	LPAREN  shift 24
-	SEMICOLON  shift 25
+	LPAREN  shift 26
+	SEMICOLON  shift 27
 
-	type  goto 26
-	while_stmt  goto 27
-	braced_stmt  goto 28
-	stmt  goto 130
-	if_stmt  goto 30
-	for_stmt  goto 31
-	decl_stmt  goto 33
-	expr  goto 34
-	id  goto 35
-	assign_stmt  goto 36
-	factor  goto 37
-	num  goto 38
+	decl_stmt  goto 28
+	expr  goto 29
+	type  goto 30
+	braced_stmt  goto 31
+	in_stmt  goto 32
+	while_stmt  goto 34
+	out_stmt  goto 35
+	stmt  goto 142
+	for_stmt  goto 37
+	if_stmt  goto 38
 	letter  goto 39
+	id  goto 40
+	assign_stmt  goto 41
+	factor  goto 42
+	num  goto 43
 
 
-state 126
-	for_stmt : FOR LPAREN expr SEMICOLON SEMICOLON RPAREN stmt .  (61)
+state 138
+	for_stmt : FOR LPAREN expr SEMICOLON SEMICOLON RPAREN stmt .  (65)
 
-	.  reduce 61
+	.  reduce 65
 
 
-state 127
+state 139
 	for_stmt : FOR LPAREN expr SEMICOLON SEMICOLON expr RPAREN . stmt
 
 	NUMBER  shift 7
@@ -2832,36 +3054,40 @@ state 127
 	INC  shift 10
 	DEC  shift 11
 	B_AND  shift 12
-	B_IOR  shift 13
-	B_EOR  shift 14
-	B_OPP  shift 15
+	B_OR  shift 13
+	B_XOR  shift 14
+	B_NOT  shift 15
 	INT  shift 16
 	CHAR  shift 17
 	IF  shift 18
 	WHILE  shift 19
 	FOR  shift 20
-	LETTER  shift 21
-	NOT  shift 22
+	IN  shift 21
+	OUT  shift 22
+	LETTER  shift 23
+	NOT  shift 24
 	LBRACE  shift 5
-	LPAREN  shift 24
-	SEMICOLON  shift 25
+	LPAREN  shift 26
+	SEMICOLON  shift 27
 
-	type  goto 26
-	while_stmt  goto 27
-	braced_stmt  goto 28
-	stmt  goto 131
-	if_stmt  goto 30
-	for_stmt  goto 31
-	decl_stmt  goto 33
-	expr  goto 34
-	id  goto 35
-	assign_stmt  goto 36
-	factor  goto 37
-	num  goto 38
+	decl_stmt  goto 28
+	expr  goto 29
+	type  goto 30
+	braced_stmt  goto 31
+	in_stmt  goto 32
+	while_stmt  goto 34
+	out_stmt  goto 35
+	stmt  goto 143
+	for_stmt  goto 37
+	if_stmt  goto 38
 	letter  goto 39
+	id  goto 40
+	assign_stmt  goto 41
+	factor  goto 42
+	num  goto 43
 
 
-state 128
+state 140
 	for_stmt : FOR LPAREN expr SEMICOLON expr SEMICOLON RPAREN . stmt
 
 	NUMBER  shift 7
@@ -2870,94 +3096,98 @@ state 128
 	INC  shift 10
 	DEC  shift 11
 	B_AND  shift 12
-	B_IOR  shift 13
-	B_EOR  shift 14
-	B_OPP  shift 15
+	B_OR  shift 13
+	B_XOR  shift 14
+	B_NOT  shift 15
 	INT  shift 16
 	CHAR  shift 17
 	IF  shift 18
 	WHILE  shift 19
 	FOR  shift 20
-	LETTER  shift 21
-	NOT  shift 22
+	IN  shift 21
+	OUT  shift 22
+	LETTER  shift 23
+	NOT  shift 24
 	LBRACE  shift 5
-	LPAREN  shift 24
-	SEMICOLON  shift 25
+	LPAREN  shift 26
+	SEMICOLON  shift 27
 
-	type  goto 26
-	while_stmt  goto 27
-	braced_stmt  goto 28
-	stmt  goto 132
-	if_stmt  goto 30
-	for_stmt  goto 31
-	decl_stmt  goto 33
-	expr  goto 34
-	id  goto 35
-	assign_stmt  goto 36
-	factor  goto 37
-	num  goto 38
+	decl_stmt  goto 28
+	expr  goto 29
+	type  goto 30
+	braced_stmt  goto 31
+	in_stmt  goto 32
+	while_stmt  goto 34
+	out_stmt  goto 35
+	stmt  goto 144
+	for_stmt  goto 37
+	if_stmt  goto 38
 	letter  goto 39
+	id  goto 40
+	assign_stmt  goto 41
+	factor  goto 42
+	num  goto 43
 
 
-state 129
-	expr : expr . SUB expr
-	expr : expr . MOD expr
+state 141
 	expr : expr . INC
 	expr : expr . DEC
-	expr : expr . ADD expr
 	expr : expr . MUL expr
 	expr : expr . DIV expr
+	expr : expr . MOD expr
+	expr : expr . ADD expr
+	expr : expr . SUB expr
 	expr : expr . OR expr
-	expr : expr . AND expr
-	expr : expr . M_LEFT expr
-	expr : expr . LEE expr
-	expr : expr . LET expr
-	expr : expr . NE expr
-	expr : expr . EQ expr
-	expr : expr . M_RIGHT expr
-	expr : expr . GRE expr
-	expr : expr . GRT expr
 	for_stmt : FOR LPAREN expr SEMICOLON expr SEMICOLON expr . RPAREN stmt
+	expr : expr . GRT expr
+	expr : expr . LEE expr
+	expr : expr . AND expr
+	expr : expr . LET expr
+	expr : expr . GRE expr
+	expr : expr . EQ expr
+	expr : expr . NE expr
+	expr : expr . M_LEFT expr
+	expr : expr . M_RIGHT expr
 
-	ADD  shift 58
-	SUB  shift 59
-	MUL  shift 60
-	DIV  shift 61
-	MOD  shift 62
-	INC  shift 63
-	DEC  shift 64
-	M_LEFT  shift 65
-	M_RIGHT  shift 66
-	EQ  shift 67
-	GRT  shift 68
-	LET  shift 69
-	GRE  shift 70
-	LEE  shift 71
-	NE  shift 72
-	AND  shift 73
-	OR  shift 74
-	RPAREN  shift 133
-
-
-state 130
-	for_stmt : FOR LPAREN SEMICOLON expr SEMICOLON expr RPAREN stmt .  (62)
-
-	.  reduce 62
-
-
-state 131
-	for_stmt : FOR LPAREN expr SEMICOLON SEMICOLON expr RPAREN stmt .  (60)
-
-	.  reduce 60
+	ADD  shift 59
+	SUB  shift 60
+	MUL  shift 61
+	DIV  shift 62
+	MOD  shift 63
+	INC  shift 64
+	DEC  shift 65
+	M_LEFT  shift 66
+	M_RIGHT  shift 67
+	EQ  shift 68
+	GRT  shift 69
+	LET  shift 70
+	GRE  shift 71
+	LEE  shift 72
+	NE  shift 73
+	AND  shift 74
+	OR  shift 75
+	RPAREN  shift 145
 
 
-state 132
-	for_stmt : FOR LPAREN expr SEMICOLON expr SEMICOLON RPAREN stmt .  (59)
+state 142
+	for_stmt : FOR LPAREN SEMICOLON expr SEMICOLON expr RPAREN stmt .  (66)
 
-	.  reduce 59
+	.  reduce 66
 
 
-state 133
+state 143
+	for_stmt : FOR LPAREN expr SEMICOLON SEMICOLON expr RPAREN stmt .  (64)
+
+	.  reduce 64
+
+
+state 144
+	for_stmt : FOR LPAREN expr SEMICOLON expr SEMICOLON RPAREN stmt .  (63)
+
+	.  reduce 63
+
+
+state 145
 	for_stmt : FOR LPAREN expr SEMICOLON expr SEMICOLON expr RPAREN . stmt
 
 	NUMBER  shift 7
@@ -2966,50 +3196,54 @@ state 133
 	INC  shift 10
 	DEC  shift 11
 	B_AND  shift 12
-	B_IOR  shift 13
-	B_EOR  shift 14
-	B_OPP  shift 15
+	B_OR  shift 13
+	B_XOR  shift 14
+	B_NOT  shift 15
 	INT  shift 16
 	CHAR  shift 17
 	IF  shift 18
 	WHILE  shift 19
 	FOR  shift 20
-	LETTER  shift 21
-	NOT  shift 22
+	IN  shift 21
+	OUT  shift 22
+	LETTER  shift 23
+	NOT  shift 24
 	LBRACE  shift 5
-	LPAREN  shift 24
-	SEMICOLON  shift 25
+	LPAREN  shift 26
+	SEMICOLON  shift 27
 
-	type  goto 26
-	while_stmt  goto 27
-	braced_stmt  goto 28
-	stmt  goto 134
-	if_stmt  goto 30
-	for_stmt  goto 31
-	decl_stmt  goto 33
-	expr  goto 34
-	id  goto 35
-	assign_stmt  goto 36
-	factor  goto 37
-	num  goto 38
+	decl_stmt  goto 28
+	expr  goto 29
+	type  goto 30
+	braced_stmt  goto 31
+	in_stmt  goto 32
+	while_stmt  goto 34
+	out_stmt  goto 35
+	stmt  goto 146
+	for_stmt  goto 37
+	if_stmt  goto 38
 	letter  goto 39
+	id  goto 40
+	assign_stmt  goto 41
+	factor  goto 42
+	num  goto 43
 
 
-state 134
-	for_stmt : FOR LPAREN expr SEMICOLON expr SEMICOLON expr RPAREN stmt .  (58)
+state 146
+	for_stmt : FOR LPAREN expr SEMICOLON expr SEMICOLON expr RPAREN stmt .  (62)
 
-	.  reduce 58
+	.  reduce 62
 
 
 ##############################################################################
 # Summary
 ##############################################################################
 
-State 107 contains 1 shift-reduce conflict(s)
+State 117 contains 1 shift-reduce conflict(s)
 
 
-42 token(s), 17 nonterminal(s)
-66 grammar rule(s), 135 state(s)
+44 token(s), 19 nonterminal(s)
+70 grammar rule(s), 147 state(s)
 
 
 ##############################################################################
