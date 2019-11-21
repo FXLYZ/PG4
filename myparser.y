@@ -25,7 +25,8 @@ class Var
 {
 public:
 	string name;
-	int num;		//某类型的第几个变量
+	int num;		//某类型的第几个变量
+
 	ExpType type;	//变量类型
 	Var(){ type = Void; }
 };
@@ -47,18 +48,23 @@ public:
 	}
 }symbolTable;
 
-//定义一个节点
+//定义一个节点
+
 class TreeNode
 {
 public:
-	TreeNode* children[MAXCHILDREN];	//子节点
+	TreeNode* children[MAXCHILDREN];	//子节点
+
 	TreeNode* sibling;					//兄弟节点
-	int line;		// 第几行
+	int line;		// 第几行
+
 	int num;		//节点编号
 	NodeKind nodekind;	//节点类型
 	union { StmtKind stmt; ExpKind expr; } kind;
-	union { int op; 	//操作符类型
-		int val;		//常数值
+	union { int op; 	//操作符类型
+
+		int val;		//常数值
+
 		char* name;		//ID
 		char char_val;	//字符值 
 	} attr;
@@ -124,7 +130,8 @@ public:
 		return res;
 	}
 
-	// 单目运算符
+	// 单目运算符
+
 	static TreeNode* newUnaryNode(int token, TreeNode* fr)
 	{
 		TreeNode* t = newOpNode(token);
@@ -132,7 +139,8 @@ public:
 		return t;
 	}
 
-	// 双目运算符
+	// 双目运算符
+
 	static TreeNode* newBinaryNode(int token, TreeNode* fr, TreeNode* sc)
 	{
 		TreeNode* t = newOpNode(token);
@@ -288,14 +296,21 @@ public:
 		cout << "Children: ";
 		for(int i=0; i<MAXCHILDREN; i++) {
 			if(this->children[i] != NULL)
+			{
 				cout << " " << this->children[i]->num;
+				TreeNode* temp=this->children[i];
+				while(temp->sibling!=NULL)
+		        {
+		            cout << " " << temp->sibling->num;
+		            temp=temp->sibling;
+		        }
+			}
 		}
-		if(this->sibling != NULL)
-			cout << " " << this->sibling->num;
 		cout << endl;
 	}
 
-	// 打印语法树
+	// 打印语法树
+
 	void display()
 	{
 		for(int i = 0; i < MAXCHILDREN; i++) {
@@ -354,7 +369,8 @@ public:
 %token ASSIGN
 %token USUB
 
-//优先级
+//优先级
+
 %right ASSIGN
 %left OR
 %left AND  

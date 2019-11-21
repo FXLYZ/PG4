@@ -1,2 +1,7 @@
 [Application]
-WindowPlacement=0 1 -63 -1 -1 -1 432 524 1826 1313
+WindowPlacement=0 1 -32062 -32000 -1 -1 48 47 1442 836
+[Output]
+WindowPlacement1=0 1 -1 -1 -1 -1 0 0 497 525
+WindowOrder1=1
+Position1=0 1
+Cursor1=0 7 0 7
